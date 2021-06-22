@@ -60,8 +60,7 @@ inline result hash(
 
 result hash( const hash256& header_hash, uint64_t nonce) noexcept;
 
-inline bool verify_final_hash(const hash256& header_hash, const hash256& mix_hash, uint64_t nonce,
-    const hash256& boundary) noexcept
+inline bool verify_final_hash(const hash256& header_hash, uint64_t nonce, const hash256& boundary) noexcept
 {
     return frkhash_verify_final_hash(&header_hash, nonce, &boundary);
 }

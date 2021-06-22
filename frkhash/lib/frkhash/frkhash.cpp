@@ -47,9 +47,10 @@ result hash(const hash256& header_hash, uint64_t nonce) noexcept
 {
     const hash512 seed = hash_seed(header_hash, nonce);
     //need to copy the second 32byte half of the hash512 because thats the mix_hash
-    uint8_t mhash[sizeof(seed)/2];
+    const int size = sizeof(seed)/2;
+    uint8_t mhash[size];
     // it should be 64 bytes so we should be able to start from 32 but man idfk
-    std::memcpy(&mhash[0], &seed[sizeof(seed)/2], sizeof(seed)/2);
+    std::memcpy(&mhash[0], &seed[size], sizeof(seed)/2);
     //std::memcpy(&mhash[0], &seed[32], 32);
 
     const hash256 mix_hash = hash256_from_bytes(mhash);
@@ -91,8 +92,9 @@ frkhash_result frkhash_hash(
     const hash256* header_hash, uint64_t nonce) noexcept
 {
     const hash512 seed = hash_seed(*header_hash, nonce);
-    uint8_t mhash[sizeof(seed)/2];
-    std::memcpy(&mhash[0], &seed[sizeof(seed)/2], sizeof(seed)/2);
+    const int size = sizeof(seed)/2;
+    uint8_t mhash[size];
+    std::memcpy(&mhash[0], &seed[size], sizeof(seed)/2);
     const hash256 mix_hash = hash256_from_bytes(mhash);
     return {hash_final(seed), mix_hash};
 }
@@ -110,9 +112,9 @@ bool frkhash_verify(const hash256* header_hash,
     const hash512 seed = hash_seed(*header_hash, nonce);
     if (!is_less_or_equal(hash_final(seed), *boundary))
         return false;
-
-    uint8_t mhash[sizeof(seed)/2];
-    std::memcpy(&mhash[0], &seed[sizeof(seed)/2], sizeof(seed)/2);
+    const int size = sizeof(seed)/2;
+    uint8_t mhash[size];
+    std::memcpy(&mhash[0], &seed[size], sizeof(seed)/2);
 
     const hash256 expected_mix_hash = hash256_from_bytes(mhash);
     return is_equal(expected_mix_hash, *mix_hash);
