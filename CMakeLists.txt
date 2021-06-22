@@ -91,7 +91,7 @@ endif()
 cable_add_buildinfo_library(PROJECT_NAME ${PROJECT_NAME})
 
 add_subdirectory(libdev)
-add_subdirectory(libeth)
+add_subdirectory(libfrk)
 add_subdirectory(libhwmon)
 add_subdirectory(libpool)
 add_subdirectory(frkhash)

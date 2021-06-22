@@ -12,8 +12,8 @@
 #include "ethash_cuda_miner_kernel.h"
 
 #include <libdev/Worker.h>
-#include <libeth/EthashAux.h>
-#include <libeth/Miner.h>
+#include <libfrk/FrkhashAux.h>
+#include <libfrk/Miner.h>
 
 #include <functional>
 

@@ -12,7 +12,7 @@
 
 #include <frkminer/buildinfo.h>
 
-#include <libeth/Farm.h>
+#include <libfrk/Farm.h>
 
 #ifndef HOST_NAME_MAX
 #define HOST_NAME_MAX 255

@@ -30,7 +30,7 @@
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
 #endif
 
-#include <libeth/Farm.h>
+#include <libfrk/Farm.h>
 #if ETH_ETHASHCL
 #include <libcl/CLMiner.h>
 #endif

@@ -10,8 +10,8 @@
 #pragma once
 
 #include <libdev/Worker.h>
-#include <libeth/EthashAux.h>
-#include <libeth/Miner.h>
+#include <libfrk/FrkhashAux.h>
+#include <libfrk/Miner.h>
 
 #include <functional>
 

@@ -13,8 +13,8 @@
 #include <mutex>
 
 #include <libdev/Worker.h>
-#include <libeth/EthashAux.h>
-#include <libeth/Miner.h>
+#include <libfrk/FrkhashAux.h>
+#include <libfrk/Miner.h>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>

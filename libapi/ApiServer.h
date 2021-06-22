@@ -17,8 +17,8 @@
 
 #include <json/json.h>
 
-#include <libeth/Farm.h>
-#include <libeth/Miner.h>
+#include <libfrk/Farm.h>
+#include <libfrk/Miner.h>
 #include <libpool/PoolManager.h>
 
 using namespace dev;

@@ -13,7 +13,7 @@
 
 #include <boost/asio/ip/address.hpp>
 
-#include <libeth/Miner.h>
+#include <libfrk/Miner.h>
 #include <libpool/PoolURI.h>
 
 extern boost::asio::io_service g_io_service;

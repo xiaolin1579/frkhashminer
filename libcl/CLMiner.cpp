@@ -11,7 +11,7 @@
 #include <boost/dll.hpp>
 
 #include <frkhash/frkhash.hpp>
-#include <libeth/Farm.h>
+#include <libfrk/Farm.h>
 
 #include "CLMiner.h"
 #include "frkhash.h"

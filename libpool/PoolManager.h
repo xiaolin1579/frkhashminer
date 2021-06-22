@@ -14,8 +14,8 @@
 #include <json/json.h>
 
 #include <libdev/Worker.h>
-#include <libeth/Farm.h>
-#include <libeth/Miner.h>
+#include <libfrk/Farm.h>
+#include <libfrk/Miner.h>
 
 #include "PoolClient.h"
 #include "getwork/EthGetworkClient.h"

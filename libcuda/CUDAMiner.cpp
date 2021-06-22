@@ -9,7 +9,7 @@
  */
 
 #include <frkhash/frkhash.hpp>
-#include <libeth/Farm.h>
+#include <libfrk/Farm.h>
 
 #include "CUDAMiner.h"
 
