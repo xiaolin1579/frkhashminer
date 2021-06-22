@@ -25,7 +25,7 @@ namespace frkhash
 {
 constexpr auto revision = FRANKOHASH_REVISION;
 
-using result = frankohash_result;
+using result = frkhash_result;
 
 /// Constructs a 256-bit hash from an array of bytes.
 ///
@@ -55,7 +55,7 @@ struct search_result
 inline result hash(
     const hash256& header_hash, uint64_t nonce) noexcept
 {
-    return frankohash_hash(&header_hash, nonce);
+    return frkhash_hash(&header_hash, nonce);
 }
 
 result hash( const hash256& header_hash, uint64_t nonce) noexcept;
@@ -63,13 +63,13 @@ result hash( const hash256& header_hash, uint64_t nonce) noexcept;
 inline bool verify_final_hash(const hash256& header_hash, const hash256& mix_hash, uint64_t nonce,
     const hash256& boundary) noexcept
 {
-    return frankohash_verify_final_hash(&header_hash, &mix_hash, nonce, &boundary);
+    return frkhash_verify_final_hash(&header_hash, nonce, &boundary);
 }
 
 inline bool verify(const hash256& header_hash, const hash256& mix_hash,
     uint64_t nonce, const hash256& boundary) noexcept
 {
-    return frankohash_verify(&header_hash, &mix_hash, nonce, &boundary);
+    return frkhash_verify(&header_hash, &mix_hash, nonce, &boundary);
 }
 
 search_result search( const hash256& header_hash,

@@ -14,9 +14,9 @@ static const uint32_t round_constants[22] = {  //
     0x0000008A, 0x00000088, 0x80008009, 0x8000000A, 0x8000808B, 0x0000008B, 0x00008089, 0x00008003,
     0x00008002, 0x00000080, 0x0000800A, 0x8000000A, 0x80008081, 0x00008080};
 
-void frankohash_keccakf800(uint32_t state[25])
+void frkhash_keccakf800(uint32_t state[25])
 {
-    // The implementation directly translated from frankohash_keccakf1600.
+    // The implementation directly translated from frkhash_keccakf1600.
 
     uint32_t Aba, Abe, Abi, Abo, Abu;
     uint32_t Aga, Age, Agi, Ago, Agu;

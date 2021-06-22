@@ -27,12 +27,12 @@ extern "C" {
  *
  * @param state  The state of 25 32-bit words on which the permutation is to be performed.
  */
-void frankohash_keccakf800(uint32_t state[25]) NOEXCEPT;
+void frkhash_keccakf800(uint32_t state[25]) NOEXCEPT;
 
-union frankohash_hash256 frankohash_keccak256(const uint8_t* data, size_t size) NOEXCEPT;
-union frankohash_hash256 frankohash_keccak256_32(const uint8_t data[32]) NOEXCEPT;
-union frankohash_hash512 frankohash_keccak512(const uint8_t* data, size_t size) NOEXCEPT;
-union frankohash_hash512 frankohash_keccak512_64(const uint8_t data[64]) NOEXCEPT;
+union frkhash_hash256 frkhash_keccak256(const uint8_t* data, size_t size) NOEXCEPT;
+union frkhash_hash256 frkhash_keccak256_32(const uint8_t data[32]) NOEXCEPT;
+union frkhash_hash512 frkhash_keccak512(const uint8_t* data, size_t size) NOEXCEPT;
+union frkhash_hash512 frkhash_keccak512_64(const uint8_t data[64]) NOEXCEPT;
 
 #ifdef __cplusplus
 }

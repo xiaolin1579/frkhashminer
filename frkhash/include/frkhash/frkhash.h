@@ -26,22 +26,22 @@ extern "C" {
  */
 #define FRANKOHASH_REVISION "23"
 
-struct frankohash_result
+struct frkhash_result
 {
-    union frankohash_hash256 final_hash;
-    union frankohash_hash256 mix_hash;
+    union frkhash_hash256 final_hash;
+    union frkhash_hash256 mix_hash;
 };
 
-struct frankohash_result frankohash_hash(
-    const union frankohash_hash256* header_hash, uint64_t nonce) NOEXCEPT;
+struct frkhash_result frkhash_hash(
+    const union frkhash_hash256* header_hash, uint64_t nonce) NOEXCEPT;
 
-bool frankohash_verify(
-    const union frankohash_hash256* header_hash, const union frankohash_hash256* mix_hash, uint64_t nonce,
-    const union frankohash_hash256* boundary) NOEXCEPT;
+bool frkhash_verify(
+    const union frkhash_hash256* header_hash, const union frkhash_hash256* mix_hash, uint64_t nonce,
+    const union frkhash_hash256* boundary) NOEXCEPT;
 
-bool frankohash_verify_final_hash(
-    const union frankohash_hash256* mix_hash, uint64_t nonce,
-    const union frankohash_hash256* boundary) NOEXCEPT;
+bool frkhash_verify_final_hash(
+    const union frkhash_hash256* mix_hash, uint64_t nonce,
+    const union frkhash_hash256* boundary) NOEXCEPT;
 
 #ifdef __cplusplus
 }

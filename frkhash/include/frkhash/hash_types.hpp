@@ -8,8 +8,8 @@
 
 namespace frkhash
 {
-using hash256 = frankohash_hash256;
-using hash512 = frankohash_hash512;
-using hash1024 = frankohash_hash1024;
-using hash2048 = frankohash_hash2048;
+using hash256 = frkhash_hash256;
+using hash512 = frkhash_hash512;
+using hash1024 = frkhash_hash1024;
+using hash2048 = frkhash_hash2048;
 }  // namespace frkhash

@@ -18,7 +18,7 @@ extern "C" {
  * @return  The largest prime number `p` such `p <= upper_bound`.
  *          In case `upper_bound <= 1`, returns 0.
  */
-int frankohash_find_largest_prime(int upper_bound) NOEXCEPT;
+int frkhash_find_largest_prime(int upper_bound) NOEXCEPT;
 
 #ifdef __cplusplus
 }

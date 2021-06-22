@@ -21,7 +21,7 @@ static int is_odd_prime(int number)
     return 1;
 }
 
-int frankohash_find_largest_prime(int upper_bound)
+int frkhash_find_largest_prime(int upper_bound)
 {
     int n = upper_bound;
 
