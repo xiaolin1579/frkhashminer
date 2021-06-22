@@ -12,7 +12,7 @@
 
 #include <chrono>
 
-#include <ethash/ethash.hpp>
+#include <frkhash/frkhash.hpp>
 
 using namespace std;
 using namespace dev;

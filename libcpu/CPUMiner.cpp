@@ -17,7 +17,7 @@
 #include <unistd.h>
 #endif
 
-#include <ethash/ethash.hpp>
+#include <frkhash/frkhash.hpp>
 #include <libeth/Farm.h>
 
 #include <boost/version.hpp>
@@ -160,9 +160,9 @@ void CPUMiner::kick_miner() {
 void CPUMiner::search(const dev::eth::WorkPackage& w) {
     constexpr size_t blocksize = 30;
 
-    const auto& context = ethash::get_global_epoch_context_full(w.epoch);
-    const auto header = ethash::hash256_from_bytes(w.header.data());
-    const auto boundary = ethash::hash256_from_bytes(w.boundary.data());
+    const auto& context = frkhash::get_global_epoch_context_full(w.epoch);
+    const auto header = frkhash::hash256_from_bytes(w.header.data());
+    const auto boundary = frkhash::hash256_from_bytes(w.boundary.data());
     auto nonce = w.startNonce;
 
     while (true) {
@@ -175,7 +175,7 @@ void CPUMiner::search(const dev::eth::WorkPackage& w) {
         if (shouldStop())
             break;
 
-        auto r = ethash::search(context, header, boundary, nonce, blocksize);
+        auto r = frkhash::search(context, header, boundary, nonce, blocksize);
         if (r.solution_found) {
             h256 mix{reinterpret_cast<byte*>(r.mix_hash.bytes), h256::ConstructFromPointer};
             auto sol = Solution{r.nonce, mix, w, chrono::steady_clock::now(), m_index};
@@ -247,7 +247,7 @@ void CPUMiner::enumDevices(map<string, DeviceDescriptor>& _DevicesCollection) {
 
         s.str("");
         s.clear();
-        s << "ethash::eval()/boost " << (BOOST_VERSION / 100000) << "." << (BOOST_VERSION / 100 % 1000) << "."
+        s << "frkhash::eval()/boost " << (BOOST_VERSION / 100000) << "." << (BOOST_VERSION / 100 % 1000) << "."
           << (BOOST_VERSION % 100);
         deviceDescriptor.boardName = s.str();
         deviceDescriptor.uniqueId = uniqueId;

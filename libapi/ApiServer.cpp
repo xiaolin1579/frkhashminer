@@ -10,7 +10,7 @@
 
 #include "ApiServer.h"
 
-#include <nsfminer/buildinfo.h>
+#include <frkminer/buildinfo.h>
 
 #include <libeth/Farm.h>
 

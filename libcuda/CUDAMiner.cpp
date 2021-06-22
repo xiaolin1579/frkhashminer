@@ -8,7 +8,7 @@
  * this file.
  */
 
-#include <ethash/ethash.hpp>
+#include <frkhash/frkhash.hpp>
 #include <libeth/Farm.h>
 
 #include "CUDAMiner.h"

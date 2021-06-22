@@ -4,7 +4,7 @@
 # written for another century.
 #
 # You should have received a copy of the LICENSE file with
-# this file. 
+# this file.
 
 if(UNIX)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
@@ -33,7 +33,7 @@ HunterGate(
     LOCAL
 )
 
-project(nsfminer)
+project(frkminer)
 set(PROJECT_VERSION 1.3.14) # Update version
 
 cable_set_build_type(DEFAULT Release CONFIGURATION_TYPES Release RelWithDebInfo)
@@ -94,7 +94,7 @@ add_subdirectory(libdev)
 add_subdirectory(libeth)
 add_subdirectory(libhwmon)
 add_subdirectory(libpool)
-add_subdirectory(ethash)
+add_subdirectory(frkhash)
 
 if (ETHASHCL)
     add_subdirectory(libcl)
@@ -109,7 +109,7 @@ if (APICORE)
     add_subdirectory(libapi)
 endif()
 
-add_subdirectory(nsfminer)
+add_subdirectory(frkminer)
 
 
 if(WIN32)

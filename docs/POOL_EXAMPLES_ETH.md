@@ -15,7 +15,7 @@ where `scheme` can be any of:
 * `stratum2+tcp` for plain stratum NiceHash compatible mode
 
 ## A note about this form of notation
-This notation is called URI notation and gives us great flexibility allowing nsfminer to specify all needed arguments per single connection (other miners offer single dedicated CLI arguments which are valid for all connections).
+This notation is called URI notation and gives us great flexibility allowing frkminer to specify all needed arguments per single connection (other miners offer single dedicated CLI arguments which are valid for all connections).
 An URI is formed like this
 
 ```
@@ -69,7 +69,7 @@ The above samples produce the very same result.
 
 ## Secure socket communications for stratum only
 
-nsfminer supports secure socket communications (where pool implements and offers it) to avoid the risk of a [man-in-the-middle attack](https://en.wikipedia.org/wiki/Man-in-the-middle_attack)
+frkminer supports secure socket communications (where pool implements and offers it) to avoid the risk of a [man-in-the-middle attack](https://en.wikipedia.org/wiki/Man-in-the-middle_attack)
 To enable it simply replace tcp with either:
 
 * `ssl` to enable secure socket communication **allowing only TLS 1.2** encryption
@@ -94,11 +94,11 @@ Some examples:
 ## Only for version 0.16+ (older versions not affected)
 
 Stratum autodetection has been introduced to mitigate user's duty to guess/find which stratum flavour to apply (stratum or stratum1 or stratum2).
-If you want to let nsfminer do the tests for you simply enter scheme as `stratum://` (note `+tcp` is missing) or `stratums://` for secure socket or `stratumss://` for secure socket **allowing only TLS 1.2** encryption.
+If you want to let frkminer do the tests for you simply enter scheme as `stratum://` (note `+tcp` is missing) or `stratums://` for secure socket or `stratumss://` for secure socket **allowing only TLS 1.2** encryption.
 
 ## Common samples
 
-Here you can find a collection of samples to connect to most commonly used ethash pools. (alphabetic order).
+Here you can find a collection of samples to connect to most commonly used frkhash pools. (alphabetic order).
 
 * Stratum connection is **always to be preferred** over **getwork** when pool offers it due to its better network latency.
 * If possible the samples use a protocol which supports reporting of hashrate (`--report-hashrate`) if pool supports this.
@@ -111,7 +111,7 @@ We tried to merge the requirements of the variables so they match all pools.
 
 |   Variables  | Description  | Sample |
 | ------------ | ------------ | ------ |
-| `ETH_WALLET` | Replace `ETH_WALLET` with your Ethereum wallet number including the leading `0x`.                                                                                               | `0x1234567890ABCDEF1234567890abcdef12345678` |
+| `ETH_WALLET` | Replace `ETH_WALLET` with your Expanse wallet number including the leading `0x`.                                                                                               | `0x1234567890ABCDEF1234567890abcdef12345678` |
 | `WORKERNAME` | `WORKERNAME` may only contain letters and numbers. Some pools also only allow up to a maximum of 8 characters!                                                                  | `pl1rig01` |
 | `EMAIL`      | `EMAIL` may contain letters, numbers, underscores.  Please encode dashes, @-sign and other uncommon charaters using the [Special characters](#special-characters-in-variables)  | `joe1.doe_jr-ny%40acme.com` |
 | `USERNAME`   | `USERNAME` you got from the pool (like [miningpoolhub.com](#miningpoolhubcom))                                                                                                  | `my_username` |
@@ -258,9 +258,9 @@ SSL connection:
 ### miningpoolhub.com
 
 ```
--P stratum2+tcp://USERNAME%2eWORKERNAME:WORKERPWD@asia.ethash-hub.miningpoolhub.com:20535
--P stratum2+tcp://USERNAME%2eWORKERNAME:WORKERPWD@europe.ethash-hub.miningpoolhub.com:20535
--P stratum2+tcp://USERNAME%2eWORKERNAME:WORKERPWD@us-east.ethash-hub.miningpoolhub.com:20535
+-P stratum2+tcp://USERNAME%2eWORKERNAME:WORKERPWD@asia.frkhash-hub.miningpoolhub.com:20535
+-P stratum2+tcp://USERNAME%2eWORKERNAME:WORKERPWD@europe.frkhash-hub.miningpoolhub.com:20535
+-P stratum2+tcp://USERNAME%2eWORKERNAME:WORKERPWD@us-east.frkhash-hub.miningpoolhub.com:20535
 ```
 
 HINTS:

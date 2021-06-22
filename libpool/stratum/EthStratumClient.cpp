@@ -8,8 +8,8 @@
  * this file.
  */
 
-#include <ethash/ethash.hpp>
-#include <nsfminer/buildinfo.h>
+#include <frkhash/frkhash.hpp>
+#include <frkminer/buildinfo.h>
 
 #include "EthStratumClient.h"
 
@@ -450,7 +450,7 @@ void EthStratumClient::connect_handler(const boost::system::error_code& ec) {
 #endif
                 cwarn << "* Double check hostname in the -P argument.";
                 cwarn << "* Disable certificate verification all-together via environment "
-                         "variable. See nsfminer --help for info about environment variables";
+                         "variable. See frkminer --help for info about environment variables";
                 cwarn << "If you do the latter please be advised you might expose yourself to the "
                          "risk of seeing your shares stolen";
             }
@@ -1245,7 +1245,7 @@ void EthStratumClient::processResponse(Json::Value& responseObject) {
               "params": {
                   "epoch" : "dc",
                   "target" : "0112e0be826d694b2e62d01511f12a6061fbaec8bc02357593e70e52ba",
-                  "algo" : "ethash",
+                  "algo" : "frkhash",
                   "extranonce" : "af4c"
               }
             }
