@@ -38,6 +38,14 @@ inline hash256 hash256_from_bytes(const uint8_t bytes[32]) noexcept
     return h;
 }
 
+inline hash256 hash256_from_bytes64(const uint8_t bytes[64]) noexcept
+{
+    hash256 h;
+    int size = sizeof(h)/2;
+    std::memcpy(&h, bytes[size], size);
+    return h;
+}
+
 struct search_result
 {
     bool solution_found = false;
@@ -52,26 +60,23 @@ struct search_result
     {}
 };
 
-inline result hash(
-    const hash256& header_hash, uint64_t nonce) noexcept
+inline result hash(const hash256& header_hash, uint64_t nonce) noexcept
 {
     return frkhash_hash(&header_hash, nonce);
 }
 
-result hash( const hash256& header_hash, uint64_t nonce) noexcept;
+result hash(const hash256& header_hash, uint64_t nonce) noexcept;
 
 inline bool verify_final_hash(const hash256& header_hash, uint64_t nonce, const hash256& boundary) noexcept
 {
     return frkhash_verify_final_hash(&header_hash, nonce, &boundary);
 }
 
-inline bool verify(const hash256& header_hash, const hash256& mix_hash,
-    uint64_t nonce, const hash256& boundary) noexcept
+inline bool verify(const hash256& header_hash, const hash256& mix_hash, uint64_t nonce, const hash256& boundary) noexcept
 {
     return frkhash_verify(&header_hash, &mix_hash, nonce, &boundary);
 }
 
-search_result search( const hash256& header_hash,
-    const hash256& boundary, uint64_t start_nonce, size_t iterations) noexcept;
+search_result search( const hash256& header_hash, const hash256& boundary, uint64_t start_nonce, size_t iterations) noexcept;
 
 }  // namespace frkhash

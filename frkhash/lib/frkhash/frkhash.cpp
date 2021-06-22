@@ -46,28 +46,8 @@ inline hash256 hash_final(const hash512& seed)
 result hash(const hash256& header_hash, uint64_t nonce) noexcept
 {
     const hash512 seed = hash_seed(header_hash, nonce);
-    //need to copy the second 32byte half of the hash512 because thats the mix_hash
-    const int size = sizeof(seed)/2;
-    uint8_t mhash[size];
-    // it should be 64 bytes so we should be able to start from 32 but man idfk
-    std::memcpy(&mhash[0], &seed[size], sizeof(seed)/2);
-    //std::memcpy(&mhash[0], &seed[32], 32);
-
-    const hash256 mix_hash = hash256_from_bytes(mhash);
+    const hash256 mix_hash = hash256_from_bytes64(seed.bytes);
     return {hash_final(seed), mix_hash};
-}
-
-search_result search_light(const hash256& header_hash,
-    const hash256& boundary, uint64_t start_nonce, size_t iterations) noexcept
-{
-    const uint64_t end_nonce = start_nonce + iterations;
-    for (uint64_t nonce = start_nonce; nonce < end_nonce; ++nonce)
-    {
-        result r = hash(header_hash, nonce);
-        if (is_less_or_equal(r.final_hash, boundary))
-            return {r, nonce};
-    }
-    return {};
 }
 
 search_result search(const hash256& header_hash,
@@ -92,10 +72,7 @@ frkhash_result frkhash_hash(
     const hash256* header_hash, uint64_t nonce) noexcept
 {
     const hash512 seed = hash_seed(*header_hash, nonce);
-    const int size = sizeof(seed)/2;
-    uint8_t mhash[size];
-    std::memcpy(&mhash[0], &seed[size], sizeof(seed)/2);
-    const hash256 mix_hash = hash256_from_bytes(mhash);
+    const hash256 mix_hash = hash256_from_bytes64(seed.bytes);
     return {hash_final(seed), mix_hash};
 }
 
@@ -112,11 +89,8 @@ bool frkhash_verify(const hash256* header_hash,
     const hash512 seed = hash_seed(*header_hash, nonce);
     if (!is_less_or_equal(hash_final(seed), *boundary))
         return false;
-    const int size = sizeof(seed)/2;
-    uint8_t mhash[size];
-    std::memcpy(&mhash[0], &seed[size], sizeof(seed)/2);
 
-    const hash256 expected_mix_hash = hash256_from_bytes(mhash);
+    const hash256 expected_mix_hash = hash256_from_bytes64(seed.bytes);
     return is_equal(expected_mix_hash, *mix_hash);
 }
 
