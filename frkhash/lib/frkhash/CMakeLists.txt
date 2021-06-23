@@ -14,6 +14,7 @@ target_sources(frkhash PRIVATE
     ${PROJECT_SOURCE_DIR}/include/frkhash/frkhash.hpp
     frkhash.cpp
     ${PROJECT_SOURCE_DIR}/include/frkhash/hash_types.h
+    managed.cpp
     kiss99.hpp
     primes.h
     primes.c
