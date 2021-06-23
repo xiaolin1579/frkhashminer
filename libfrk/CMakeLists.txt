@@ -7,7 +7,7 @@
 # this file.
 
 set(SOURCES
-	FrankohashAux.h FrankohashAux.cpp
+	FrkhashAux.h FrkhashAux.cpp
 	Farm.cpp Farm.h
 	Miner.h Miner.cpp
 )

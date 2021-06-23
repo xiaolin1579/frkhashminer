@@ -16,7 +16,7 @@
 #include <numeric>
 #include <string>
 
-#include "FrankohashAux.h"
+#include "FrkhashAux.h"
 
 #include <libdev/Common.h>
 #include <libdev/Log.h>

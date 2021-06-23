@@ -351,7 +351,7 @@ void Farm::submitProof(Solution const& _s) {
 }
 
 void Farm::submitProofAsync(Solution const& _s) {
-    Result r = FrankohashAux::eval(_s.work.header, _s.nonce);
+    Result r = FrkhashAux::eval(_s.work.header, _s.nonce);
     if (r.value > _s.work.boundary) {
         accountSolution(_s.midx, SolutionAccountingEnum::Failed);
         cwarn << "GPU " << _s.midx << " gave incorrect result. Lower overclocking values if it happens frequently.";

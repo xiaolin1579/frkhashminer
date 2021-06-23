@@ -22,7 +22,7 @@ struct Result {
     h256 mixHash;
 };
 
-class FrankohashAux {
+class FrkhashAux {
   public:
     static Result eval(h256 const& _headerHash, uint64_t _nonce) noexcept;
 };
