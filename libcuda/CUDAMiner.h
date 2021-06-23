@@ -33,7 +33,7 @@ class CUDAMiner : public Miner {
   protected:
     bool initDevice() override;
 
-    bool initEpoch() override;
+    bool initEpoch();
 
     void kick_miner() override;
 
