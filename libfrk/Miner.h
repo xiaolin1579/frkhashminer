@@ -264,7 +264,6 @@ class Miner : public Worker {
 
   protected:
     virtual bool initDevice() = 0;
-    void freeCache();
 
     WorkPackage work() const;
     void ReportSolution(const h256& header, uint64_t nonce);

@@ -113,7 +113,6 @@ void CUDAMiner::workLoop() {
                 bool b = initEpoch();
                 if (!b)
                     break;
-                freeCache();
 
             // Persist most recent job.
             // Job's differences should be handled at higher level

@@ -289,7 +289,6 @@ void CLMiner::workLoop() {
                     bool b = initEpoch();
                     if (!b)
                         break;
-                    freeCache();
                     w = work();
                 //}
 
