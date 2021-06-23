@@ -71,7 +71,7 @@ static void headers(vector<string>& h, bool color) {
     const string white(color ? EthWhite : "");
     const string reset(color ? EthReset : "");
 
-    auto* bi = nsfminer_get_buildinfo();
+    auto* bi = frkminer_get_buildinfo();
     stringstream ss;
     ss << yellow << "frkminer " << bi->project_version << " (No stinkin' fees edition)";
     h.push_back(ss.str());
