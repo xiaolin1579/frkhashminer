@@ -70,7 +70,7 @@ bool CUDAMiner::initEpoch() {
             try {
                 CUDA_CALL(cudaMalloc(&m_search_buf[i], sizeof(Search_results)));
             } catch (...) {
-                ReportGPUNoMemoryAndPause("mining buffer", sizeof(Search_results), m_deviceDescriptor.totalMemory);
+                //ReportGPUNoMemoryAndPause("mining buffer", sizeof(Search_results), m_deviceDescriptor.totalMemory);
                 return false; // This will prevent to exit the thread and
             }
             CUDA_CALL(cudaStreamCreateWithFlags(&m_streams[i], cudaStreamNonBlocking));
