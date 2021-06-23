@@ -41,8 +41,7 @@ inline hash256 hash256_from_bytes(const uint8_t bytes[32]) noexcept
 inline hash256 hash256_from_bytes64(const uint8_t bytes[64]) noexcept
 {
     hash256 h;
-    int size = sizeof(h)/2;
-    std::memcpy(&h, bytes[size], size);
+    std::memcpy(&h, bytes[32], 32);
     return h;
 }
 
