@@ -24,7 +24,7 @@ extern "C" {
  * The Frankohash algorithm revision implemented as specified in the Frankohash spec
  * https://github.com/ethereum/wiki/wiki/Frankohash.
  */
-#define FRANKOHASH_REVISION "23"
+#define FRKHASH_REVISION "23"
 
 struct frkhash_result
 {

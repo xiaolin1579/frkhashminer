@@ -23,7 +23,7 @@
 
 namespace frkhash
 {
-constexpr auto revision = FRANKOHASH_REVISION;
+constexpr auto revision = FRKHASH_REVISION;
 
 using result = frkhash_result;
 

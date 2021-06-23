@@ -6,13 +6,13 @@
 #pragma once
 
 /** The frkhash library version. */
-#define FRANKOHASH_VERSION "0.1.0"
+#define FRKHASH_VERSION "0.1.0"
 
 #ifdef __cplusplus
 namespace frkhash
 {
 /// The frkhash library version.
-constexpr auto version = FRANKOHASH_VERSION;
+constexpr auto version = FRKHASH_VERSION;
 
 }  // namespace frkhash
 #endif
