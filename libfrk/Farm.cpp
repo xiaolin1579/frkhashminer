@@ -8,7 +8,7 @@
  * this file.
  */
 
-#include <libfranko/Farm.h>
+#include <libfrk/Farm.h>
 
 #if ETH_ETHASHCL
 #include <libcl/CLMiner.h>

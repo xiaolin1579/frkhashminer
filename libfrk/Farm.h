@@ -24,7 +24,7 @@
 #include <libdev/Common.h>
 #include <libdev/Worker.h>
 
-#include <libfranko/Miner.h>
+#include <libfrk/Miner.h>
 
 #include <libhwmon/wrapnvml.h>
 #if defined(__linux)
