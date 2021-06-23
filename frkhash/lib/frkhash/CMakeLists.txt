@@ -12,10 +12,8 @@ target_sources(frkhash PRIVATE
     endianness.hpp
     ${PROJECT_SOURCE_DIR}/include/frkhash/frkhash.h
     ${PROJECT_SOURCE_DIR}/include/frkhash/frkhash.hpp
-    frkhash-internal.hpp
     frkhash.cpp
     ${PROJECT_SOURCE_DIR}/include/frkhash/hash_types.h
-    #managed.cpp
     kiss99.hpp
     primes.h
     primes.c
