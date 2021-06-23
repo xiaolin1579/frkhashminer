@@ -10,15 +10,15 @@
 
 #include <libfranko/Farm.h>
 
-#if EXP_FRANKOHASHCL
+#if ETH_ETHASHCL
 #include <libcl/CLMiner.h>
 #endif
 
-#if EXP_FRANKOHASHCUDA
+#if ETH_ETHASHCUDA
 #include <libcuda/CUDAMiner.h>
 #endif
 
-#if EXP_FRANKOHASHCPU
+#if ETH_ETHASHCPU
 #include <libcpu/CPUMiner.h>
 #endif
 
@@ -183,7 +183,7 @@ bool Farm::start() {
     if (!m_miners.size()) {
         for (auto it = m_DevicesCollection.begin(); it != m_DevicesCollection.end(); it++) {
             TelemetryAccountType minerTelemetry;
-#if EXP_FRANKOHASHCUDA
+#if ETH_ETHASHCUDA
             if (it->second.subscriptionType == DeviceSubscriptionTypeEnum::Cuda) {
                 minerTelemetry.prefix = "cu";
                 if (m_Settings.cuBlockSize)
@@ -193,7 +193,7 @@ bool Farm::start() {
                 m_miners.push_back(shared_ptr<Miner>(new CUDAMiner(m_miners.size(), it->second)));
             }
 #endif
-#if EXP_FRANKOHASHCL
+#if ETH_ETHASHCL
 
             if (it->second.subscriptionType == DeviceSubscriptionTypeEnum::OpenCL) {
                 minerTelemetry.prefix = "cl";
@@ -203,7 +203,7 @@ bool Farm::start() {
                 m_miners.push_back(shared_ptr<Miner>(new CLMiner(m_miners.size(), it->second)));
             }
 #endif
-#if EXP_FRANKOHASHCPU
+#if ETH_ETHASHCPU
 
             if (it->second.subscriptionType == DeviceSubscriptionTypeEnum::Cpu) {
                 minerTelemetry.prefix = "cp";
