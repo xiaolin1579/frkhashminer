@@ -4,7 +4,7 @@
 # written for another century.
 #
 # You should have received a copy of the LICENSE file with
-# this file. 
+# this file.
 
 # A custom command and target to turn the OpenCL kernel into a byte array header
 # The normal build depends on it properly and if the kernel file is changed, then
@@ -15,7 +15,7 @@ add_custom_command(
 	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/frkhash.h
 	COMMAND ${CMAKE_COMMAND} ARGS
 	-DBIN2H_SOURCE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/frkhash.cl"
-	-DBIN2H_VARIABLE_NAME=ethash_cl
+	-DBIN2H_VARIABLE_NAME=frkhash_cl
 	-DBIN2H_HEADER_FILE="${CMAKE_CURRENT_BINARY_DIR}/frkhash.h"
 	-P "${CMAKE_CURRENT_SOURCE_DIR}/bin2h.cmake"
 	COMMENT "Generating OpenCL Kernel Byte Array"
