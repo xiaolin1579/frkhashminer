@@ -15,7 +15,7 @@ set(SOURCES
 include_directories(BEFORE ..)
 
 add_library(exp ${SOURCES})
-target_link_libraries(exp PUBLIC dev PRIVATE hwmon)
+target_link_libraries(exp PUBLIC dev PRIVATE hwmon frkhash)
 
 if(FRKHASHCL)
 	target_link_libraries(exp PRIVATE cl)
