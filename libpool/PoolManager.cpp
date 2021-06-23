@@ -124,37 +124,12 @@ void PoolManager::setClientHandlers() {
         if (!wp)
             return;
 
-        int _currentEpoch = m_currentWp.epoch;
-        bool newEpoch = (_currentEpoch == -1);
-
-        // In EthereumStratum/2.0.0 epoch number is set in session
-        if (!newEpoch) {
-            if (p_client->getConnection()->StratumMode() == 3)
-                newEpoch = (wp.epoch != m_currentWp.epoch);
-            else
-                newEpoch = (wp.seed != m_currentWp.seed);
-        }
-
         bool newDiff = (wp.boundary != m_currentWp.boundary);
         m_currentWp.difficulty = wp.difficulty;
 
         m_currentWp = wp;
 
-        if (newEpoch) {
-            m_epochChanges.fetch_add(1, memory_order_relaxed);
-
-            // If epoch is valued in workpackage take it
-            if (wp.epoch == -1) {
-                if (m_currentWp.block >= 0)
-                    m_currentWp.epoch = m_currentWp.block / 30000;
-                else
-                    m_currentWp.epoch = frkhash::find_epoch_number(frkhash::hash256_from_bytes(m_currentWp.seed.data()));
-            }
-        } else {
-            m_currentWp.epoch = _currentEpoch;
-        }
-
-        if (newDiff || newEpoch)
+        if (newDiff)
             showMiningAt();
 
         cnote << "Job: " EthWhite << m_currentWp.header.abridged() << EthGray
@@ -390,7 +365,7 @@ void PoolManager::showMiningAt() {
         return;
 
     double d = dev::getHashesToTarget(m_currentWp.boundary.hex(HexPrefix::Add));
-    cnote << "Epoch : " EthWhite << m_currentWp.epoch << EthReset << " Difficulty : " EthWhite
+    cnote << " Difficulty : " EthWhite
           << dev::getFormattedHashes(d) << EthReset;
 }
 
@@ -433,8 +408,6 @@ void PoolManager::reconnecttimer_elapsed(const boost::system::error_code& ec) {
     }
 }
 
-int PoolManager::getCurrentEpoch() { return m_currentWp.epoch; }
-
 double PoolManager::getPoolDifficulty() {
     if (!m_currentWp)
         return 0.0;
@@ -443,5 +416,3 @@ double PoolManager::getPoolDifficulty() {
 }
 
 unsigned PoolManager::getConnectionSwitches() { return m_connectionSwitches.load(memory_order_relaxed); }
-
-unsigned PoolManager::getEpochChanges() { return m_epochChanges.load(memory_order_relaxed); }

@@ -59,7 +59,7 @@ void SimulateClient::submitSolution(const Solution& solution) {
     // This is a fake submission only evaluated locally
     chrono::steady_clock::time_point submit_start = chrono::steady_clock::now();
     bool accepted =
-        FrkhashAux::eval(solution.work.epoch, solution.work.header, solution.nonce).value <= solution.work.boundary;
+        FrkhashAux::eval(solution.work.header, solution.nonce).value <= solution.work.boundary;
     chrono::milliseconds response_delay_ms =
         chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - submit_start);
 

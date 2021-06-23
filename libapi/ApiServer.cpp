@@ -1089,8 +1089,6 @@ Json::Value ApiConnection::getMinerStatDetail() {
     Json::Value sharesinfo = Json::Value(Json::arrayValue);
 
     mininginfo["hashrate"] = toHex(uint32_t(t.farm.hashrate), HexPrefix::Add);
-    mininginfo["epoch"] = PoolManager::p().getCurrentEpoch();
-    mininginfo["epoch_changes"] = PoolManager::p().getEpochChanges();
     mininginfo["difficulty"] = PoolManager::p().getPoolDifficulty();
 
     sharesinfo.append(t.farm.solutions.accepted);

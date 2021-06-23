@@ -63,31 +63,16 @@ class CLMiner : public Miner {
     bool initEpoch();
 
     cl::Kernel m_searchKernel;
-    cl::Kernel m_dagKernel;
     cl::Device m_device;
 
     cl::Context* m_context = nullptr;
     cl::CommandQueue* m_queue = nullptr;
     cl::CommandQueue* m_abortqueue = nullptr;
-    cl::Buffer* m_dag[2] = {nullptr, nullptr};
-    cl::Buffer* m_light = nullptr;
     cl::Buffer* m_header = nullptr;
     cl::Buffer* m_searchBuffer = nullptr;
 
     void free_buffers() {
         m_abortMutex.lock();
-        if (m_dag[0]) {
-            delete m_dag[0];
-            m_dag[0] = nullptr;
-        }
-        if (m_dag[1]) {
-            delete m_dag[1];
-            m_dag[1] = nullptr;
-        }
-        if (m_light) {
-            delete m_light;
-            m_light = nullptr;
-        }
         if (m_header) {
             delete m_header;
             m_header = nullptr;
@@ -110,7 +95,6 @@ class CLMiner : public Miner {
         }
     }
 
-    unsigned m_dagItems = 0;
     std::mutex m_abortMutex;
 };
 

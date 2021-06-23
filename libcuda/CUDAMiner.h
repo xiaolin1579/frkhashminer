@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "ethash_cuda_miner_kernel.h"
+#include "frkhash_cuda_miner_kernel.h"
 
 #include <libdev/Worker.h>
 #include <libfrk/FrkhashAux.h>

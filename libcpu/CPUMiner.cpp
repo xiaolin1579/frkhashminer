@@ -133,17 +133,6 @@ bool CPUMiner::initDevice() {
     return true;
 }
 
-/*
- * A new epoch was receifed with last work package (called from Miner::initEpoch())
- *
- * If we get here it means epoch has changed so it's not necessary
- * to check again dag sizes. They're changed for sure
- * We've all related infos in m_epochContext (.dagSize, .dagNumItems, .lightSize, .lightNumItems)
- */
-bool CPUMiner::initEpoch() {
-    m_initialized = true;
-    return true;
-}
 
 /*
    Miner should stop working on the current block
@@ -206,18 +195,6 @@ void CPUMiner::workLoop() {
         if (!w) {
             unique_lock<mutex> l(miner_work_mutex);
             m_new_work_signal.wait_for(l, chrono::seconds(3));
-            continue;
-        }
-
-        // Epoch change ?
-        if (current.epoch != w.epoch) {
-            setEpoch(w);
-            initEpoch();
-
-            // As DAG generation takes a while we need to
-            // ensure we're on latest job, not on the one
-            // which triggered the epoch change
-            current = w;
             continue;
         }
 

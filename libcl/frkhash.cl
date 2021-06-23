@@ -241,29 +241,6 @@ typedef union
     uint uints[16];
 } compute_hash_share;
 
-#ifdef SPLIT_DAG
-#define MIX(x)                                                                       \
-    do                                                                               \
-    {                                                                                \
-        buffer[get_local_id(0)] = fnv(init0 ^ (a + x), ((uint*)&mix)[x]) % dag_size; \
-        uint idx = buffer[lane_idx];                                                 \
-        __global hash128_t const* g_dag =                                            \
-            (__global hash128_t const*)_g_dag2[idx & 1];                             \
-        mix = fnv(mix, g_dag[idx >> 1].uint8s[thread_id]);                           \
-        mem_fence(CLK_LOCAL_MEM_FENCE);                                              \
-    } while (0)
-#else
-#define MIX(x)                                                                       \
-    do                                                                               \
-    {                                                                                \
-        buffer[get_local_id(0)] = fnv(init0 ^ (a + x), ((uint*)&mix)[x]) % dag_size; \
-        uint idx = buffer[lane_idx];                                                 \
-        __global hash128_t const* g_dag = (__global hash128_t const*)_g_dag0;        \
-        mix = fnv(mix, g_dag[idx].uint8s[thread_id]);                                \
-        mem_fence(CLK_LOCAL_MEM_FENCE);                                              \
-    } while (0)
-#endif
-
 // NOTE: This struct must match the one defined in CLMiner.cpp
 struct SearchResults
 {
@@ -275,7 +252,6 @@ struct SearchResults
 
 __attribute__((reqd_work_group_size(WORKSIZE, 1, 1))) __kernel void search(
     __global struct SearchResults* g_output, __constant uint2 const* g_header,
-    __global ulong8 const* _g_dag0, __global ulong8 const* _g_dag1, uint dag_size,
     ulong start_nonce, ulong target)
 {
     if (g_output->abort)
@@ -284,9 +260,6 @@ __attribute__((reqd_work_group_size(WORKSIZE, 1, 1))) __kernel void search(
     const uint thread_id = get_local_id(0) % 4;
     const uint hash_id = get_local_id(0) / 4;
     const uint gid = get_global_id(0);
-#ifdef SPLIT_DAG
-    __global const ulong8* _g_dag2[2] = {_g_dag0, _g_dag1};
-#endif
 
     __local compute_hash_share sharebuf[WORKSIZE / 4];
     __local uint buffer[WORKSIZE];
@@ -425,60 +398,4 @@ static void SHA3_512(uint2* s)
 
     for (uint i = 0; i < 8; ++i)
         s[i] = st[i];
-}
-
-__kernel void GenerateDAG(uint start, __global const uint16* _Cache, __global uint16* _DAG0,
-    __global uint16* _DAG1, uint light_size)
-{
-    __global const Node* Cache = (__global const Node*)_Cache;
-    const uint gid = get_global_id(0);
-    uint NodeIdx = start + gid;
-    const uint thread_id = gid & 3;
-
-    __local Node sharebuf[WORKSIZE];
-    __local uint indexbuf[WORKSIZE];
-    __local Node* dagNode = sharebuf + (get_local_id(0) / 4) * 4;
-    __local uint* indexes = indexbuf + (get_local_id(0) / 4) * 4;
-    __global const Node* parentNode;
-
-    Node DAGNode = Cache[NodeIdx % light_size];
-
-    DAGNode.dwords[0] ^= NodeIdx;
-    SHA3_512(DAGNode.qwords);
-
-    dagNode[thread_id] = DAGNode;
-    barrier(CLK_LOCAL_MEM_FENCE);
-    for (uint i = 0; i < 256; ++i)
-    {
-        uint ParentIdx = fnv(NodeIdx ^ i, dagNode[thread_id].dwords[i & 15]) % light_size;
-        indexes[thread_id] = ParentIdx;
-        barrier(CLK_LOCAL_MEM_FENCE);
-
-        for (uint t = 0; t < 4; ++t)
-        {
-            uint parentIndex = indexes[t];
-            parentNode = Cache + parentIndex;
-
-            dagNode[t].dqwords[thread_id] =
-                fnv(dagNode[t].dqwords[thread_id], parentNode->dqwords[thread_id]);
-            barrier(CLK_LOCAL_MEM_FENCE);
-        }
-    }
-    DAGNode = dagNode[thread_id];
-
-    SHA3_512(DAGNode.qwords);
-
-    __global Node* DAG;
-#ifdef SPLIT_DAG
-    if (NodeIdx & 2)
-        DAG = (__global Node*)_DAG1;
-    else
-        DAG = (__global Node*)_DAG0;
-    NodeIdx &= ~2;
-    // if (NodeIdx < DAG_SIZE)
-    DAG[(NodeIdx / 2) | (NodeIdx & 1)] = DAGNode;
-#else
-    DAG = (__global Node *) _DAG0;
-    DAG[NodeIdx] = DAGNode; 
-#endif
 }

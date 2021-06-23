@@ -7,13 +7,14 @@
  * this file.
  */
 
-#include "ethash_cuda_miner_kernel.h"
+#include "frkhash_cuda_miner_kernel.h"
 
-#include "ethash_cuda_miner_kernel_globals.h"
+#include "frkhash_cuda_miner_kernel_globals.h"
 
 #include "cuda_helper.h"
 
-#include "fnv.cuh"
+#include "hash_it.cuh"
+
 
 #define copy(dst, src, count)                                                                                          \
     for (int i = 0; i != count; ++i) {                                                                                 \
@@ -22,9 +23,7 @@
 
 #include "keccak.cuh"
 
-#include "dagger_shuffled.cuh"
-
-__global__ void ethash_search(Search_results* g_output, uint64_t start_nonce) {
+__global__ void frkhash_search(Search_results* g_output, uint64_t start_nonce) {
     if (g_output->done)
         return;
     uint32_t const gid = blockIdx.x * blockDim.x + threadIdx.x;
@@ -40,16 +39,14 @@ __global__ void ethash_search(Search_results* g_output, uint64_t start_nonce) {
     g_output->done = 1;
 }
 
-void run_ethash_search(uint32_t gridSize, uint32_t blockSize, cudaStream_t stream, Search_results* g_output,
+void run_frkhash_search(uint32_t gridSize, uint32_t blockSize, cudaStream_t stream, Search_results* g_output,
                        uint64_t start_nonce) {
-    ethash_search<<<gridSize, blockSize, 0, stream>>>(g_output, start_nonce);
+    frkhash_search<<<gridSize, blockSize, 0, stream>>>(g_output, start_nonce);
     CUDA_CALL(cudaGetLastError());
 }
 
-#define FRKHASH_DATASET_PARENTS 256
-#define NODE_WORDS (64 / 4)
-
-__global__ void ethash_calculate_dag_item(uint32_t start) {
+/*
+__global__ void frkhash_calculate_dag_item(uint32_t start) {
     uint32_t const node_index = start + blockIdx.x * blockDim.x + threadIdx.x;
     if (((node_index >> 1) & (~1)) >= d_dag_size)
         return;
@@ -81,59 +78,7 @@ __global__ void ethash_calculate_dag_item(uint32_t start) {
     hash64_t* dag_nodes = (hash64_t*)d_dag;
     copy(dag_nodes[node_index].uint4s, dag_node.uint4s, 4);
 }
-
-void ethash_generate_dag(uint64_t dag_size, uint32_t gridSize, uint32_t blockSize, cudaStream_t stream) {
-    const uint32_t work = (uint32_t)(dag_size / sizeof(hash64_t));
-    const uint32_t run = gridSize * blockSize;
-
-    uint32_t base;
-    for (base = 0; base <= work - run; base += run) {
-        ethash_calculate_dag_item<<<gridSize, blockSize, 0, stream>>>(base);
-        CUDA_CALL(cudaDeviceSynchronize());
-    }
-    if (base < work) {
-        uint32_t lastGrid = work - base;
-        lastGrid = (lastGrid + blockSize - 1) / blockSize;
-        ethash_calculate_dag_item<<<lastGrid, blockSize, 0, stream>>>(base);
-        CUDA_CALL(cudaDeviceSynchronize());
-    }
-    CUDA_CALL(cudaGetLastError());
-}
-
-void set_constants(hash128_t* _dag, uint32_t _dag_size, hash64_t* _light, uint32_t _light_size) {
-    CUDA_CALL(cudaMemcpyToSymbol(d_dag, &_dag, sizeof(hash128_t*)));
-    CUDA_CALL(cudaMemcpyToSymbol(d_dag_size, &_dag_size, sizeof(uint32_t)));
-    CUDA_CALL(cudaMemcpyToSymbol(d_light, &_light, sizeof(hash64_t*)));
-    CUDA_CALL(cudaMemcpyToSymbol(d_light_size, &_light_size, sizeof(uint32_t)));
-}
-
-void get_constants(hash128_t** _dag, uint32_t* _dag_size, hash64_t** _light, uint32_t* _light_size) {
-    /*
-       Using the direct address of the targets did not work.
-       So I've to read first into local variables when using cudaMemcpyFromSymbol()
-    */
-    if (_dag) {
-        hash128_t* _d;
-        CUDA_CALL(cudaMemcpyFromSymbol(&_d, d_dag, sizeof(hash128_t*)));
-        *_dag = _d;
-    }
-    if (_dag_size) {
-        uint32_t _ds;
-        CUDA_CALL(cudaMemcpyFromSymbol(&_ds, d_dag_size, sizeof(uint32_t)));
-        *_dag_size = _ds;
-    }
-    if (_light) {
-        hash64_t* _l;
-        CUDA_CALL(cudaMemcpyFromSymbol(&_l, d_light, sizeof(hash64_t*)));
-        *_light = _l;
-    }
-    if (_light_size) {
-        uint32_t _ls;
-        CUDA_CALL(cudaMemcpyFromSymbol(&_ls, d_light_size, sizeof(uint32_t)));
-        *_light_size = _ls;
-    }
-}
-
+*/
 void set_header(hash32_t _header) { CUDA_CALL(cudaMemcpyToSymbol(d_header, &_header, sizeof(hash32_t))); }
 
 void set_target(uint64_t _target) { CUDA_CALL(cudaMemcpyToSymbol(d_target, &_target, sizeof(uint64_t))); }

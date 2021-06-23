@@ -1188,7 +1188,6 @@ void EthStratumClient::processResponse(Json::Value& responseObject) {
 
             m_current.header = h256(header);
             m_current.boundary = h256(m_session->nextWorkBoundary.hex(HexPrefix::Add));
-            m_current.epoch = m_session->epoch;
             m_current.startNonce = m_session->extraNonce;
             m_current.exSizeBytes = m_session->extraNonceSizeBytes;
             m_current_timestamp = chrono::steady_clock::now();
@@ -1239,17 +1238,7 @@ void EthStratumClient::processResponse(Json::Value& responseObject) {
                     processExtranonce(enonce);
             }
         } else if (_method == "mining.set" && m_conn->StratumMode() == ETHEREUMSTRATUM2) {
-            /*
-            {
-              "method": "mining.set",
-              "params": {
-                  "epoch" : "dc",
-                  "target" : "0112e0be826d694b2e62d01511f12a6061fbaec8bc02357593e70e52ba",
-                  "algo" : "frkhash",
-                  "extranonce" : "af4c"
-              }
-            }
-            */
+
             if (!responseObject.isMember("params") || !responseObject["params"].isObject() ||
                 responseObject["params"].empty()) {
                 cwarn << "Got invalid mining.set message. Discarding ...";
@@ -1258,14 +1247,10 @@ void EthStratumClient::processResponse(Json::Value& responseObject) {
             m_session->firstMiningSet = true;
             jPrm = responseObject["params"];
             string timeout = jPrm.get("timeout", "").asString();
-            string epoch = jPrm.get("epoch", "").asString();
             string target = jPrm.get("target", "").asString();
 
             if (!timeout.empty())
                 m_session->timeout = stoi(timeout, nullptr, 16);
-
-            if (!epoch.empty())
-                m_session->epoch = stoul(epoch, nullptr, 16);
 
             if (!target.empty()) {
                 target = "0x" + dev::padLeft(target, 64, '0');

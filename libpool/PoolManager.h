@@ -55,7 +55,6 @@ class PoolManager {
     void stop();
     bool isConnected() { return p_client->isConnected(); };
     bool isRunning() { return m_running; };
-    int getCurrentEpoch();
     uint64_t getCurrentClientDuration() {
         if (p_client && isConnected())
             return p_client->m_session->usDuration();
@@ -64,7 +63,6 @@ class PoolManager {
     };
     double getPoolDifficulty();
     unsigned getConnectionSwitches();
-    unsigned getEpochChanges();
 
   private:
     void rotateConnect();
