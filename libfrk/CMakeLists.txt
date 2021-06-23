@@ -14,15 +14,15 @@ set(SOURCES
 
 include_directories(BEFORE ..)
 
-add_library(eth ${SOURCES})
-target_link_libraries(eth PUBLIC dev PRIVATE hwmon)
+add_library(exp ${SOURCES})
+target_link_libraries(exp PUBLIC dev PRIVATE hwmon)
 
 if(FRKHASHCL)
-	target_link_libraries(eth PRIVATE cl)
+	target_link_libraries(exp PRIVATE cl)
 endif()
 if(FRKHASHCUDA)
-	target_link_libraries(eth PUBLIC cuda)
+	target_link_libraries(exp PUBLIC cuda)
 endif()
 if(FRKHASHCPU)
-	target_link_libraries(eth PUBLIC cpu)
+	target_link_libraries(exp PUBLIC cpu)
 endif()

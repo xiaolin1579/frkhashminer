@@ -13,7 +13,7 @@
 #include "Miner.h"
 
 namespace dev {
-namespace eth {
+namespace exp {
 
 DeviceDescriptor Miner::getDescriptor() { return m_deviceDescriptor; }
 
@@ -124,5 +124,5 @@ void Miner::updateHashRate(uint32_t _groupSize, uint32_t _increment) noexcept {
     m_groupCount = 0;
 }
 
-} // namespace eth
+} // namespace exp
 } // namespace dev

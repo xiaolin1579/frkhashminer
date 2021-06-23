@@ -35,5 +35,5 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(..)
 
 add_library(cl ${SOURCES})
-target_link_libraries(cl PUBLIC eth)
+target_link_libraries(cl PUBLIC exp)
 target_link_libraries(cl PRIVATE OpenCL::OpenCL Boost::filesystem Boost::thread frkhash)

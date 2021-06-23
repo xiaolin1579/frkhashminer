@@ -1116,7 +1116,7 @@ void EthStratumClient::processResponse(Json::Value& responseObject) {
                     string sSeedHash = jPrm.get(Json::Value::ArrayIndex(prmIdx++), "").asString();
                     string sShareTarget = jPrm.get(Json::Value::ArrayIndex(prmIdx++), "").asString();
 
-                    // Only some eth-proxy compatible implementations carry the block number
+                    // Only some exp-proxy compatible implementations carry the block number
                     // namely ethermine.org
                     m_current.block = -1;
                     if (m_conn->StratumMode() == EthStratumClient::ETHPROXY && jPrm.size() > prmIdx &&

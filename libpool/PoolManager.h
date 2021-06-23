@@ -25,7 +25,7 @@
 using namespace std;
 
 namespace dev {
-namespace eth {
+namespace exp {
 struct PoolSettings {
     std::vector<std::shared_ptr<URI>> connections; // List of connection definitions
     unsigned getWorkPollInterval = 500;            // Interval (ms) between getwork requests
@@ -94,5 +94,5 @@ class PoolManager {
     int m_lastBlock;
 };
 
-} // namespace eth
+} // namespace exp
 } // namespace dev

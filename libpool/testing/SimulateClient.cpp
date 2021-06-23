@@ -16,7 +16,7 @@
 using namespace std;
 using namespace chrono;
 using namespace dev;
-using namespace eth;
+using namespace exp;
 
 SimulateClient::SimulateClient(unsigned const& block) : PoolClient(), Worker("sim") { m_block = block; }
 

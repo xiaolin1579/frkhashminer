@@ -121,7 +121,7 @@ cd "%~dp0\frkminer\"
 if not exist "build\" mkdir "build\"
 
 rem For CUDA 9.x pass also `-T v140`
-cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild -DETHASHCL=ON -DETHASHCUDA=ON -DAPICORE=ON ..
+cmake -G "Visual Studio 15 2017 Win64" -H. -Bbuild -DFRKHASHCL=ON -DFRKHASHCUDA=ON -DAPICORE=ON ..
 cd "build\"
 cmake --build . --config Release --target package
 
@@ -134,11 +134,11 @@ pause
 Pass these options to CMake configuration command, e.g.
 
 ```shell
-cmake .. -DETHASHCUDA=ON -DETHASHCL=OFF
+cmake .. -DFRKHASHCUDA=ON -DFRKHASHCL=OFF
 ```
 
-* `-DETHASHCL=ON` - enable OpenCL mining, `ON` by default.
-* `-DETHASHCUDA=ON` - enable CUDA mining, `ON` by default.
+* `-DFRKHASHCL=ON` - enable OpenCL mining, `ON` by default.
+* `-DFRKHASHCUDA=ON` - enable CUDA mining, `ON` by default.
 * `-DAPICORE=ON` - enable API Server, `ON` by default.
 * `-DBINKERN=ON` - install AMD binary kernels, `OFF` by default.
 * `-DETHDBUS=ON` - enable D-Bus support, `OFF` by default.

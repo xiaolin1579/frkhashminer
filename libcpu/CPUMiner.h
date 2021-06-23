@@ -16,7 +16,7 @@
 #include <functional>
 
 namespace dev {
-namespace eth {
+namespace exp {
 class CPUMiner : public Miner {
   public:
     CPUMiner(unsigned _index, DeviceDescriptor& _device);
@@ -25,7 +25,7 @@ class CPUMiner : public Miner {
     static unsigned getNumDevices();
     static void enumDevices(std::map<string, DeviceDescriptor>& _DevicesCollection);
 
-    void search(const dev::eth::WorkPackage& w);
+    void search(const dev::exp::WorkPackage& w);
 
   protected:
     bool initDevice() override;
@@ -37,5 +37,5 @@ class CPUMiner : public Miner {
     void workLoop() override;
 };
 
-} // namespace eth
+} // namespace exp
 } // namespace dev

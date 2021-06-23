@@ -177,8 +177,8 @@ Place command line options in a file, for example:
   --report-hashrate
   --HWMON 1
   -P
-    stratums://0x2ceCE0...b3caa0F6e86.rig0@eth-us-east.flexpool.io:5555
-    stratums://0x2ceCE0...b3caa0F6e86.rig0@eth-us-west.flexpool.io:5555
+    stratums://0x2ceCE0...b3caa0F6e86.rig0@exp-us-east.flexpool.io:5555
+    stratums://0x2ceCE0...b3caa0F6e86.rig0@exp-us-west.flexpool.io:5555
   -v 7 --display-interval 15
 
 

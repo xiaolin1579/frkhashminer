@@ -25,7 +25,7 @@ build_script:
 - cmd: >-
     call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsMSBuildCmd.bat"
 
-    set CMAKE_ARGS=-G "Visual Studio 15 2017 Win64" -H. -Bbuild -DETHASHCL=ON -DETHASHCUDA=ON -DAPICORE=ON -DHUNTER_JOBS_NUMBER=%NUMBER_OF_PROCESSORS%
+    set CMAKE_ARGS=-G "Visual Studio 15 2017 Win64" -H. -Bbuild -DFRKHASHCL=ON -DFRKHASHCUDA=ON -DAPICORE=ON -DHUNTER_JOBS_NUMBER=%NUMBER_OF_PROCESSORS%
 
     cmake %CMAKE_ARGS%
 

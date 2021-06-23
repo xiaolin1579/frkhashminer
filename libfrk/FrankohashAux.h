@@ -16,7 +16,7 @@
 #include <frkhash/frkhash.hpp>
 
 namespace dev {
-namespace eth {
+namespace exp {
 struct Result {
     h256 value;
     h256 mixHash;
@@ -53,5 +53,5 @@ struct Solution {
     unsigned midx;                                // Originating miner Id
 };
 
-} // namespace eth
+} // namespace exp
 } // namespace dev

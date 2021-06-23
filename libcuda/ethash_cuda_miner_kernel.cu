@@ -46,7 +46,7 @@ void run_ethash_search(uint32_t gridSize, uint32_t blockSize, cudaStream_t strea
     CUDA_CALL(cudaGetLastError());
 }
 
-#define ETHASH_DATASET_PARENTS 256
+#define FRKHASH_DATASET_PARENTS 256
 #define NODE_WORDS (64 / 4)
 
 __global__ void ethash_calculate_dag_item(uint32_t start) {
@@ -63,7 +63,7 @@ __global__ void ethash_calculate_dag_item(uint32_t start) {
 
     const int thread_id = threadIdx.x & 3;
 
-    for (uint32_t i = 0; i != ETHASH_DATASET_PARENTS; ++i) {
+    for (uint32_t i = 0; i != FRKHASH_DATASET_PARENTS; ++i) {
         uint32_t parent_index = fnv(node_index ^ i, dag_node.words[i % NODE_WORDS]) % d_light_size;
         for (uint32_t t = 0; t < 4; t++) {
             uint32_t shuffle_index = SHFL(parent_index, t, 4);

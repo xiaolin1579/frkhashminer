@@ -29,7 +29,7 @@
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::exp;
 using namespace boost::placeholders;
 
 template <typename Verifier> class verbose_verification {

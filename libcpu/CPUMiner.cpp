@@ -40,7 +40,7 @@
 
 using namespace std;
 using namespace dev;
-using namespace eth;
+using namespace exp;
 
 /* ################## OS-specific functions ################## */
 
@@ -157,7 +157,7 @@ void CPUMiner::kick_miner() {
     m_new_work_signal.notify_one();
 }
 
-void CPUMiner::search(const dev::eth::WorkPackage& w) {
+void CPUMiner::search(const dev::exp::WorkPackage& w) {
     constexpr size_t blocksize = 30;
 
     const auto& context = frkhash::get_global_epoch_context_full(w.epoch);

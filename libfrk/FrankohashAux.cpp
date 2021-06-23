@@ -13,7 +13,7 @@
 #include <frkhash/frkhash.hpp>
 
 using namespace dev;
-using namespace eth;
+using namespace exp;
 
 Result FrankohashAux::eval(h256 const& _headerHash, uint64_t _nonce) noexcept {
     auto headerHash = frkhash::hash256_from_bytes(_headerHash.data());

@@ -45,7 +45,7 @@
 #define CL_TARGET_BATCH_TIME 0.3F // seconds
 
 namespace dev {
-namespace eth {
+namespace exp {
 class CLMiner : public Miner {
   public:
     CLMiner(unsigned _index, DeviceDescriptor& _device);
@@ -114,5 +114,5 @@ class CLMiner : public Miner {
     std::mutex m_abortMutex;
 };
 
-} // namespace eth
+} // namespace exp
 } // namespace dev

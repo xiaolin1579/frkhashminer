@@ -17,10 +17,10 @@
 #include "frkhash.h"
 
 using namespace dev;
-using namespace eth;
+using namespace exp;
 
 namespace dev {
-namespace eth {
+namespace exp {
 
 const size_t c_maxSearchResults = 4;
 
@@ -225,7 +225,7 @@ vector<cl::Device> getDevices(vector<cl::Platform> const& _platforms, unsigned _
 
 } // namespace
 
-} // namespace eth
+} // namespace exp
 } // namespace dev
 
 CLMiner::CLMiner(unsigned _index, DeviceDescriptor& _device) : Miner("cl-", _index) {

@@ -15,7 +15,7 @@
 
 using namespace std;
 using namespace dev;
-using namespace eth;
+using namespace exp;
 
 CUDAMiner::CUDAMiner(unsigned _index, DeviceDescriptor& _device) : Miner("cu-", _index) {
     m_deviceDescriptor = _device;
@@ -267,7 +267,7 @@ void CUDAMiner::enumDevices(minerMap& _DevicesCollection) {
 
 static const uint32_t zero3[3] = {0, 0, 0}; // zero the result count
 
-void CUDAMiner::search(uint8_t const* header, uint64_t target, uint64_t start_nonce, const dev::eth::WorkPackage& w) {
+void CUDAMiner::search(uint8_t const* header, uint64_t target, uint64_t start_nonce, const dev::exp::WorkPackage& w) {
     set_header(*((const hash32_t*)header));
     if (m_current_target != target) {
         set_target(target);

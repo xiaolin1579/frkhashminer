@@ -39,7 +39,7 @@ using namespace boost::placeholders;
 extern boost::asio::io_service g_io_service;
 
 namespace dev {
-namespace eth {
+namespace exp {
 struct FarmSettings {
     unsigned hwMon = 0;      // 0 - No monitor; 1 - Temp and Fan; 2 - Temp Fan Power
     unsigned tempStart = 40; // Temperature threshold to restart mining (if paused)
@@ -159,5 +159,5 @@ class Farm {
     random_device m_engine;
 };
 
-} // namespace eth
+} // namespace exp
 } // namespace dev

@@ -9,10 +9,10 @@
 
 ## Build docker image
 ```shell
-# Defaults to -DETHASHCUDA=ON -DETHASHCL=ON
+# Defaults to -DFRKHASHCUDA=ON -DFRKHASHCL=ON
 docker build -t frkminer .
 # Example to set flag for CL and CUDA to OFF
-docker build --build-arg DETHASHCL=OFF --build-arg DETHASHCUDA=OFF -t frkminer .
+docker build --build-arg DFRKHASHCL=OFF --build-arg DFRKHASHCUDA=OFF -t frkminer .
 ``` 
 
 ## Run docker container  

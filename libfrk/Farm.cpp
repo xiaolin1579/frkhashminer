@@ -10,22 +10,22 @@
 
 #include <libfrk/Farm.h>
 
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
 #include <libcl/CLMiner.h>
 #endif
 
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
 #include <libcuda/CUDAMiner.h>
 #endif
 
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
 #include <libcpu/CPUMiner.h>
 #endif
 
 #include <libpool/PoolManager.h>
 
 namespace dev {
-namespace eth {
+namespace exp {
 Farm* Farm::m_this = nullptr;
 const int Farm::m_collectInterval;
 
@@ -183,7 +183,7 @@ bool Farm::start() {
     if (!m_miners.size()) {
         for (auto it = m_DevicesCollection.begin(); it != m_DevicesCollection.end(); it++) {
             TelemetryAccountType minerTelemetry;
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
             if (it->second.subscriptionType == DeviceSubscriptionTypeEnum::Cuda) {
                 minerTelemetry.prefix = "cu";
                 if (m_Settings.cuBlockSize)
@@ -193,7 +193,7 @@ bool Farm::start() {
                 m_miners.push_back(shared_ptr<Miner>(new CUDAMiner(m_miners.size(), it->second)));
             }
 #endif
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
 
             if (it->second.subscriptionType == DeviceSubscriptionTypeEnum::OpenCL) {
                 minerTelemetry.prefix = "cl";
@@ -203,7 +203,7 @@ bool Farm::start() {
                 m_miners.push_back(shared_ptr<Miner>(new CLMiner(m_miners.size(), it->second)));
             }
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
 
             if (it->second.subscriptionType == DeviceSubscriptionTypeEnum::Cpu) {
                 minerTelemetry.prefix = "cp";
@@ -527,5 +527,5 @@ bool Farm::spawn_file_in_bin_dir(const char* filename, const vector<string>& arg
     return false;
 }
 
-} // namespace eth
+} // namespace exp
 } // namespace dev

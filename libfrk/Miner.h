@@ -30,7 +30,7 @@ extern mutex g_seqDAGMutex;
 extern bool g_seqDAG;
 
 namespace dev {
-namespace eth {
+namespace exp {
 enum class DeviceTypeEnum { Unknown, Cpu, Gpu, Accelerator };
 
 enum class DeviceSubscriptionTypeEnum {
@@ -295,5 +295,5 @@ class Miner : public Worker {
     uint64_t m_groupCount = 0;
 };
 
-} // namespace eth
+} // namespace exp
 } // namespace dev

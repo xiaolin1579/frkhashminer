@@ -31,13 +31,13 @@
 #endif
 
 #include <libfrk/Farm.h>
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
 #include <libcl/CLMiner.h>
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
 #include <libcuda/CUDAMiner.h>
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
 #include <libcpu/CPUMiner.h>
 #endif
 #include <libpool/PoolManager.h>
@@ -51,7 +51,7 @@
 
 using namespace std;
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::exp;
 
 using namespace boost::program_options;
 
@@ -99,7 +99,7 @@ static void headers(vector<string>& h, bool color) {
 #else
     ss << "MSVC " << bi->compiler_version << ", ";
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
     int v;
     if (cudaRuntimeGetVersion(&v) == cudaSuccess)
         ss << "CUDA " << v / 1000 << '.' << (v % 100) / 10 << ", ";
@@ -127,13 +127,13 @@ static void headers(vector<string>& h, bool color) {
 
 static void on_help_module(string m) {
     static const vector<string> modules({
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
         "cl",
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
             "cu",
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
             "cp",
 #endif
 #if API_CORE
@@ -182,7 +182,7 @@ static void on_api_port(int i) {
 }
 #endif
 
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
 static void on_cu_block_size(unsigned b) {
     if (b == 32 || b == 64 || b == 128 || b == 256)
         return;
@@ -196,7 +196,7 @@ static void on_cu_streams(unsigned s) {
 }
 #endif
 
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
 static void on_cl_local_work(unsigned b) {
     if (b == 64 || b == 128 || b == 256)
         return;
@@ -333,13 +333,13 @@ class MinerCLI {
         options_description general("General options");
         options_description test("Test options");
         options_description misc("Miscellaneous options");
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
         options_description cl("OpenCL options");
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
         options_description cu("CUDA options");
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
         options_description cp("CPU options");
 #endif
 #if API_CORE
@@ -354,13 +354,13 @@ class MinerCLI {
                 value<string>()->notifier(on_help_module),
 
                 "Help for a given module, one of: "
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
                 "cl, "
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
                 "cu, "
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
                 "cp, "
 #endif
 #if API_CORE
@@ -387,17 +387,17 @@ class MinerCLI {
 
                 "Configuration file name. See '-H conf' for details.")
 
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
             ("opencl,G",
 
                 "Mine/Benchmark using OpenCL only")
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
             ("cuda,U",
 
                 "Mine/Benchmark using CUDA only")
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
             ("cpu",
 
                 "Development ONLY ! (NO MINING)")
@@ -481,7 +481,7 @@ class MinerCLI {
                 "Use syslog appropriate output (drop timestamp "
                 "and channel prefix)")
 
-#if ETH_ETHASHCL || ETH_ETHASHCUDA || ETH_ETHASH_CPU
+#if EXP_FRKHASHCL || EXP_FRKHASHCUDA || EXP_FRKHASH_CPU
 
             ("list-devices,L",
 
@@ -535,7 +535,7 @@ class MinerCLI {
                 "server. If not set, any connection is granted access. "
                 "Be advised passwords are sent unencrypted");
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
         cu.add_options()
 
             ("cu-block", value<unsigned>()->default_value(128)->notifier(on_cu_block_size),
@@ -546,7 +546,7 @@ class MinerCLI {
 
                 "Set the number of streams per GPU, valid values 1, 2 or 4");
 #endif
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
         cl.add_options()
 
             ("cl-work", value<unsigned>()->default_value(128)->notifier(on_cl_local_work),
@@ -573,13 +573,13 @@ class MinerCLI {
 
         options_description all("All options");
         all.add(general)
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
             .add(cl)
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
             .add(cu)
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
             .add(cp)
 #endif
 #if API_CORE
@@ -709,15 +709,15 @@ class MinerCLI {
                      << "        ssl         Encrypted tcp connection\n\n";
             else if (s == "test") // Simulation
                 cout << endl << test << endl;
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
             else if (s == "cl") // opencl
                 cout << endl << cl << endl;
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
             else if (s == "cu") // cuda
                 cout << endl << cu << endl;
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
             else if (s == "cp") // cpu
                 cout << endl << cp << endl;
 #endif
@@ -734,8 +734,8 @@ class MinerCLI {
                      << "  --report-hashrate\n"
                      << "  --HWMON 1\n"
                      << "  -P\n"
-                     << "    stratums://0x2ceCE0...b3caa0F6e86.rig0@eth-us-east.flexpool.io:5555\n"
-                     << "    stratums://0x2ceCE0...b3caa0F6e86.rig0@eth-us-west.flexpool.io:5555\n"
+                     << "    stratums://0x2ceCE0...b3caa0F6e86.rig0@exp-us-east.flexpool.io:5555\n"
+                     << "    stratums://0x2ceCE0...b3caa0F6e86.rig0@exp-us-west.flexpool.io:5555\n"
                      << "  -v 7 --display-interval 15\n\n";
 #ifdef _WIN32
             else if (s == "env")
@@ -792,12 +792,12 @@ class MinerCLI {
         m_FarmSettings.hwMon = vm["HWMON"].as<unsigned>();
         m_FarmSettings.nonce = vm["nonce"].as<string>();
 
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
         m_FarmSettings.cuBlockSize = vm["cu-block"].as<unsigned>();
         m_FarmSettings.cuStreams = vm["cu-streams"].as<unsigned>();
 #endif
 
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
         m_FarmSettings.clGroupSize = vm["cl-work"].as<unsigned>();
         m_FarmSettings.clSplit = vm.count("cl-split");
 #endif
@@ -889,15 +889,15 @@ class MinerCLI {
     }
 
     void execute() {
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
         if (m_minerType == MinerType::CL || m_minerType == MinerType::Mixed)
             CLMiner::enumDevices(m_DevicesCollection);
 #endif
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
         if (m_minerType == MinerType::CUDA || m_minerType == MinerType::Mixed)
             CUDAMiner::enumDevices(m_DevicesCollection);
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
         if (m_minerType == MinerType::CPU)
             CPUMiner::enumDevices(m_DevicesCollection);
 #endif
@@ -913,13 +913,13 @@ class MinerCLI {
             cout << setw(5) << "Type ";
             cout << setw(30) << "Name                          ";
 
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
             if (m_minerType == MinerType::CUDA || m_minerType == MinerType::Mixed) {
                 cout << setw(5) << "CUDA ";
                 cout << setw(4) << "SM  ";
             }
 #endif
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
             if (m_minerType == MinerType::CL || m_minerType == MinerType::Mixed)
                 cout << setw(5) << "CL   ";
 #endif
@@ -932,13 +932,13 @@ class MinerCLI {
             cout << setw(5) << "---- ";
             cout << setw(30) << "----------------------------- ";
 
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
             if (m_minerType == MinerType::CUDA || m_minerType == MinerType::Mixed) {
                 cout << setw(5) << "---- ";
                 cout << setw(4) << "--- ";
             }
 #endif
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
             if (m_minerType == MinerType::CL || m_minerType == MinerType::Mixed)
                 cout << setw(5) << "---- ";
 #endif
@@ -966,13 +966,13 @@ class MinerCLI {
                     break;
                 }
                 cout << setw(30) << (it->second.boardName).substr(0, 28);
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
                 if (m_minerType == MinerType::CUDA || m_minerType == MinerType::Mixed) {
                     cout << setw(5) << (it->second.cuDetected ? "Yes" : "");
                     cout << setw(4) << it->second.cuCompute;
                 }
 #endif
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
                 if (m_minerType == MinerType::CL || m_minerType == MinerType::Mixed)
                     cout << setw(5) << (it->second.clDetected ? "Yes" : "");
 #endif
@@ -988,7 +988,7 @@ class MinerCLI {
         // Subscribe devices with appropriate Miner Type
         // Use CUDA first when available then, as second, OpenCL
 
-#if ETH_ETHASHCUDA
+#if EXP_FRKHASHCUDA
         if (m_minerType == MinerType::CUDA || m_minerType == MinerType::Mixed)
             for (auto it = m_DevicesCollection.begin(); it != m_DevicesCollection.end(); it++) {
                 if (!it->second.cuDetected || it->second.subscriptionType != DeviceSubscriptionTypeEnum::None)
@@ -998,7 +998,7 @@ class MinerCLI {
                     it->second.subscriptionType = DeviceSubscriptionTypeEnum::Cuda;
             }
 #endif
-#if ETH_ETHASHCL
+#if EXP_FRKHASHCL
         if (m_minerType == MinerType::CL || m_minerType == MinerType::Mixed)
             for (auto it = m_DevicesCollection.begin(); it != m_DevicesCollection.end(); it++) {
                 if (!it->second.clDetected || it->second.subscriptionType != DeviceSubscriptionTypeEnum::None)
@@ -1008,7 +1008,7 @@ class MinerCLI {
                     it->second.subscriptionType = DeviceSubscriptionTypeEnum::OpenCL;
             }
 #endif
-#if ETH_ETHASHCPU
+#if EXP_FRKHASHCPU
         if (m_minerType == MinerType::CPU)
             for (auto it = m_DevicesCollection.begin(); it != m_DevicesCollection.end(); it++)
                 it->second.subscriptionType = DeviceSubscriptionTypeEnum::Cpu;

@@ -22,7 +22,7 @@
 #include <libpool/PoolManager.h>
 
 using namespace dev;
-using namespace dev::eth;
+using namespace dev::exp;
 using namespace std::chrono;
 
 using boost::asio::ip::tcp;
