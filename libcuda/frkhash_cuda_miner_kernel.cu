@@ -13,17 +13,14 @@
 
 #include "cuda_helper.h"
 
-#include "keccak.cuh"
-
-#include "hash_it.cuh"
-
-
 #define copy(dst, src, count)                                                                                          \
     for (int i = 0; i != count; ++i) {                                                                                 \
         (dst)[i] = (src)[i];                                                                                           \
     }
 
 #include "keccak.cuh"
+
+#include "hash_it.cuh"
 
 __global__ void frkhash_search(Search_results* g_output, uint64_t start_nonce) {
     if (g_output->done)
