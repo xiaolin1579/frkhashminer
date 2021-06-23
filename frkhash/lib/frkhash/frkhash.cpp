@@ -2,6 +2,8 @@
 // Copyright 2021-Present Christopher Franko.
 // Licensed under the Apache License, Version 2.0.
 
+#include "frkhash-internal.hpp"
+
 #include "../support/attributes.h"
 #include "bit_manipulation.h"
 #include "endianness.hpp"
