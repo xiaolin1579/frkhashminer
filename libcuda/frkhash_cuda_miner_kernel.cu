@@ -13,6 +13,8 @@
 
 #include "cuda_helper.h"
 
+#include "keccak.cuh"
+
 #include "hash_it.cuh"
 
 
