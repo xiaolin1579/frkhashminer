@@ -301,7 +301,7 @@ void CLMiner::workLoop() {
                 m_queue->enqueueWriteBuffer(*m_searchBuffer, CL_FALSE, offsetof(SearchResults, count), sizeof(zerox3),
                                             zerox3);
 
-                m_searchKernel.setArg(2, (uint64_t)(u64)((u256)w.boundary >> 192));
+                m_searchKernel.setArg(3, (uint64_t)(u64)((u256)w.boundary >> 192));
 #ifdef DEV_BUILD
                 if (g_logOptions & LOG_SWITCH)
                     cnote << "Switch time: "
@@ -319,7 +319,7 @@ void CLMiner::workLoop() {
             uint32_t batch_blocks = m_deviceDescriptor.clGroupSize * m_block_multiple;
 
             // Run the kernel.
-            m_searchKernel.setArg(3, startNonce);
+            m_searchKernel.setArg(2, startNonce);
             m_hung_miner.store(false);
             m_queue->enqueueNDRangeKernel(m_searchKernel, cl::NullRange, batch_blocks, m_deviceDescriptor.clGroupSize);
 

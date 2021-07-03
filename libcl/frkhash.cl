@@ -43,8 +43,6 @@ uint amd_bitalign(uint src0, uint src1, uint src2)
 #error "WORKSIZE has to be a multiple of 4"
 #endif
 
-#define FNV_PRIME 0x01000193U
-
 static __constant uint2 const Keccak_f1600_RC[24] = {
     (uint2)(0x00000001, 0x00000000),
     (uint2)(0x00008082, 0x00000000),
@@ -214,9 +212,6 @@ static __constant uint2 const Keccak_f1600_RC[24] = {
     } while (0)
 
 
-#define fnv(x, y) ((x)*FNV_PRIME ^ (y))
-#define fnv_reduce(v) fnv(fnv(fnv(v.x, v.y), v.z), v.w)
-
 typedef union
 {
     uint uints[128 / sizeof(uint)];
@@ -250,9 +245,16 @@ struct SearchResults
     uint gid[MAX_OUTPUTS];
 };
 
+//output             = arg 0
+//header             = arg 1
+//start_nonce        = arg 2
+//target (boundary)  = arg 3
+
 __attribute__((reqd_work_group_size(WORKSIZE, 1, 1))) __kernel void search(
-    __global struct SearchResults* g_output, __constant uint2 const* g_header,
-    ulong start_nonce, ulong target)
+    __global struct SearchResults* g_output,
+    __constant uint2 const* g_header,
+    ulong start_nonce,
+    ulong target)
 {
     if (g_output->abort)
         return;
@@ -295,59 +297,11 @@ __attribute__((reqd_work_group_size(WORKSIZE, 1, 1))) __kernel void search(
 
     for (int pass = 0; pass < 2; ++pass)
     {
+      // This is a very clever yet unintuitive solution
+      // Classic case of Just because you can, doesn't mean you should
         KECCAK_PROCESS(state, select(5, 12, pass != 0), select(8, 1, pass != 0));
         if (pass > 0)
             break;
-
-        uint init0;
-        uint8 mix;
-
-#pragma unroll 1
-        for (uint tid = 0; tid < 4; tid++)
-        {
-            if (tid == thread_id)
-            {
-                share->uint2s[0] = state[0];
-                share->uint2s[1] = state[1];
-                share->uint2s[2] = state[2];
-                share->uint2s[3] = state[3];
-                share->uint2s[4] = state[4];
-                share->uint2s[5] = state[5];
-                share->uint2s[6] = state[6];
-                share->uint2s[7] = state[7];
-            }
-
-            barrier(CLK_LOCAL_MEM_FENCE);
-
-            mix = share->uint8s[thread_id & 1];
-            init0 = share->uints[0];
-
-            barrier(CLK_LOCAL_MEM_FENCE);
-
-#pragma unroll 1
-            for (uint a = 0; a < ACCESSES; a += 8)
-            {
-                const uint lane_idx = 4 * hash_id + a / 8 % 4;
-                for (uint x = 0; x < 8; ++x)
-                    MIX(x);
-            }
-
-            barrier(CLK_LOCAL_MEM_FENCE);
-
-            share->uint2s[thread_id] = (uint2)(fnv_reduce(mix.lo), fnv_reduce(mix.hi));
-
-            barrier(CLK_LOCAL_MEM_FENCE);
-
-            if (tid == thread_id)
-            {
-                state[8] = share->uint2s[0];
-                state[9] = share->uint2s[1];
-                state[10] = share->uint2s[2];
-                state[11] = share->uint2s[3];
-            }
-
-            barrier(CLK_LOCAL_MEM_FENCE);
-        }
 
         state[12] = as_uint2(0x0000000000000001UL);
         state[13] = (uint2)(0);
@@ -374,13 +328,6 @@ __attribute__((reqd_work_group_size(WORKSIZE, 1, 1))) __kernel void search(
         g_output->gid[slot] = gid;
     }
 }
-
-typedef union _Node
-{
-    uint dwords[16];
-    uint2 qwords[8];
-    uint4 dqwords[4];
-} Node;
 
 static void SHA3_512(uint2* s)
 {
