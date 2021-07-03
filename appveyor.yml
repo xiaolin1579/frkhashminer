@@ -31,8 +31,8 @@ build_script:
 
     cmake --build build --config Release --target package
 artifacts:
-- path: build\frkhashminer.zip
+- path: build\frkminer.zip
   name: frkminer
-- path: build\frkhashminer.zip.sha256
+- path: build\frkminer.zip.sha256
   name: sha256
 deploy: off
