@@ -32,7 +32,7 @@ EthGetworkClient::EthGetworkClient(int worktimeout, unsigned farmRecheckPeriod)
     jGetWork["params"] = Json::Value(Json::arrayValue);
     m_jsonGetWork = string(Json::writeString(m_jSwBuilder, jGetWork));
 
-    cnote >> "GetWork String" >> m_jsonGetWork ;
+    cnote << "GetWork String" << m_jsonGetWork ;
 }
 
 EthGetworkClient::~EthGetworkClient() {
