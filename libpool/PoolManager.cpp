@@ -126,7 +126,7 @@ void PoolManager::setClientHandlers() {
     p_client->onWorkReceived([&](WorkPackage const& wp) {
         // Should not happen !
         if (!wp){
-          cnote << "Work not recieved or empty!?"
+          cnote << "Work not recieved or empty!?";
           return;
         }
 
@@ -370,7 +370,7 @@ void PoolManager::rotateConnect() {
 void PoolManager::showMiningAt() {
     // Should not happen
     if (!m_currentWp){
-      cnote << "Current Work Empty in PoolManager::ShowMiningAt"
+      cnote << "Current Work Empty in PoolManager::ShowMiningAt";
       return;
     }
 
