@@ -82,12 +82,16 @@ void PoolManager::setClientHandlers() {
 
         // Activate timing for HR submission
         if (m_Settings.reportHashrate) {
+
+          cnote << "Activating timing for HR submission...";
+
             m_submithrtimer.expires_from_now(boost::posix_time::seconds(m_Settings.hashRateInterval));
             m_submithrtimer.async_wait(m_io_strand.wrap(
                 boost::bind(&PoolManager::submithrtimer_elapsed, this, boost::asio::placeholders::error)));
         }
 
         // Signal async operations have completed
+        cnote << "Async operations have completed";
         m_async_pending.store(false, memory_order_relaxed);
     });
 
@@ -315,11 +319,11 @@ void PoolManager::rotateConnect() {
             p_client = nullptr;
 
         if (m_Settings.connections.at(m_activeConnectionIdx)->Family() == ProtocolFamily::GETWORK)
-            p_client =
-                unique_ptr<PoolClient>(new EthGetworkClient(m_Settings.noWorkTimeout, m_Settings.getWorkPollInterval));
+            p_client = unique_ptr<PoolClient>(new EthGetworkClient(m_Settings.noWorkTimeout, m_Settings.getWorkPollInterval));
+
         if (m_Settings.connections.at(m_activeConnectionIdx)->Family() == ProtocolFamily::STRATUM)
-            p_client =
-                unique_ptr<PoolClient>(new EthStratumClient(m_Settings.noWorkTimeout, m_Settings.noResponseTimeout));
+            p_client = unique_ptr<PoolClient>(new EthStratumClient(m_Settings.noWorkTimeout, m_Settings.noResponseTimeout));
+
         if (m_Settings.connections.at(m_activeConnectionIdx)->Family() == ProtocolFamily::SIMULATION)
             p_client = unique_ptr<PoolClient>(new SimulateClient(m_Settings.benchmarkBlock));
 

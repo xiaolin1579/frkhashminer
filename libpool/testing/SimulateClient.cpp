@@ -77,7 +77,7 @@ void SimulateClient::workLoop() {
     m_start_time = chrono::steady_clock::now();
 
     WorkPackage current;
-    current.seed = h256::random(); // We don't actually need a real seed as the epoch
+    //current.seed = h256::random(); // We don't actually need a real seed as the epoch
                                    // is calculated upon block number (see poolmanager)
     current.header = h256::random();
     current.block = m_block;

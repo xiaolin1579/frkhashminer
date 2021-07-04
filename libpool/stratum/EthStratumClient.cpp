@@ -1091,11 +1091,11 @@ void EthStratumClient::processResponse(Json::Value& responseObject) {
                 m_current.job = jPrm.get(Json::Value::ArrayIndex(0), "").asString();
 
                 if (m_conn->StratumMode() == EthStratumClient::ETHEREUMSTRATUM) {
-                    string sSeedHash = jPrm.get(Json::Value::ArrayIndex(1), "").asString();
+                    //string sSeedHash = jPrm.get(Json::Value::ArrayIndex(1), "").asString();
                     string sHeaderHash = jPrm.get(Json::Value::ArrayIndex(2), "").asString();
 
-                    if (sHeaderHash != "" && sSeedHash != "") {
-                        m_current.seed = h256(sSeedHash);
+                    if (sHeaderHash != "") {
+                        //m_current.seed = h256(sSeedHash);
                         m_current.header = h256(sHeaderHash);
                         m_current.boundary = m_session->nextWorkBoundary;
                         m_current.startNonce = m_session->extraNonce;
@@ -1113,7 +1113,7 @@ void EthStratumClient::processResponse(Json::Value& responseObject) {
                     }
                 } else {
                     string sHeaderHash = jPrm.get(Json::Value::ArrayIndex(prmIdx++), "").asString();
-                    string sSeedHash = jPrm.get(Json::Value::ArrayIndex(prmIdx++), "").asString();
+                    //string sSeedHash = jPrm.get(Json::Value::ArrayIndex(prmIdx++), "").asString();
                     string sShareTarget = jPrm.get(Json::Value::ArrayIndex(prmIdx++), "").asString();
 
                     // Only some exp-proxy compatible implementations carry the block number
@@ -1143,7 +1143,7 @@ void EthStratumClient::processResponse(Json::Value& responseObject) {
                     if (l < 66)
                         sShareTarget = "0x" + string(66 - l, '0') + sShareTarget.substr(2);
 
-                    m_current.seed = h256(sSeedHash);
+                    //m_current.seed = h256(sSeedHash);
                     m_current.header = h256(sHeaderHash);
                     m_current.boundary = h256(sShareTarget);
                     m_current_timestamp = chrono::steady_clock::now();

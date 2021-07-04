@@ -31,6 +31,8 @@ EthGetworkClient::EthGetworkClient(int worktimeout, unsigned farmRecheckPeriod)
     jGetWork["method"] = "eth_getWork";
     jGetWork["params"] = Json::Value(Json::arrayValue);
     m_jsonGetWork = string(Json::writeString(m_jSwBuilder, jGetWork));
+
+    cnote >> "GetWork String" >> m_jsonGetWork ;
 }
 
 EthGetworkClient::~EthGetworkClient() {
@@ -352,7 +354,7 @@ void EthGetworkClient::processResponse(Json::Value& JRes) {
                 WorkPackage newWp;
 
                 newWp.header = h256(JPrm.get(Json::Value::ArrayIndex(0), "").asString());
-                newWp.seed = h256(JPrm.get(Json::Value::ArrayIndex(1), "").asString());
+                //newWp.seed = h256(JPrm.get(Json::Value::ArrayIndex(1), "").asString());
                 newWp.boundary = h256(JPrm.get(Json::Value::ArrayIndex(2), "").asString());
                 newWp.job = newWp.header.hex();
                 if (m_current.header != newWp.header) {
