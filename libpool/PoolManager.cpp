@@ -125,8 +125,12 @@ void PoolManager::setClientHandlers() {
 
     p_client->onWorkReceived([&](WorkPackage const& wp) {
         // Should not happen !
-        if (!wp)
-            return;
+        if (!wp){
+          cnote << "Work not recieved or empty!?"
+          return;
+        }
+
+
 
         bool newDiff = (wp.boundary != m_currentWp.boundary);
         m_currentWp.difficulty = wp.difficulty;
@@ -365,8 +369,11 @@ void PoolManager::rotateConnect() {
 
 void PoolManager::showMiningAt() {
     // Should not happen
-    if (!m_currentWp)
-        return;
+    if (!m_currentWp){
+      cnote << "Current Work Empty in PoolManager::ShowMiningAt"
+      return;
+    }
+
 
     double d = dev::getHashesToTarget(m_currentWp.boundary.hex(HexPrefix::Add));
     cnote << " Difficulty : " EthWhite
