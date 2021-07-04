@@ -73,11 +73,11 @@ static void headers(vector<string>& h, bool color) {
 
     auto* bi = frkminer_get_buildinfo();
     stringstream ss;
-    ss << yellow << "frkminer " << bi->project_version << " (No stinkin' fees edition)";
+    ss << yellow << "frkminer " << bi->project_version << " (FRKHASH edition)";
     h.push_back(ss.str());
 
     ss.str("");
-    ss << white << "Copyright 2021 Jean M. Cyr, Licensed under the terms";
+    ss << white << "Copyright 2021 Christopher J. Franko, Licensed under the terms";
     h.push_back(ss.str());
 
     ss.str("");

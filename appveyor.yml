@@ -1,4 +1,5 @@
 version: 1.3.{build}
+build_cloud: build-machine
 image: Visual Studio 2017
 clone_depth: 100
 environment:
