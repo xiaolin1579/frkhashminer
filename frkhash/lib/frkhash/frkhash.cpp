@@ -37,7 +37,7 @@ inline hash256 hash_final(const hash512& seed){
 }
 }  // namespace
 
-result hash(const hash256& header_hash, uint64_t nonce, string extraNothing = "tryingToMakeThisDifferent") noexcept{
+result hash(const hash256& header_hash, uint64_t nonce, int extraNothing = 0) noexcept{
     const hash512 seed = hash_seed(header_hash, nonce);
     const hash256 mix_hash = hash256_from_bytes64(seed.bytes);
     return {hash_final(seed), mix_hash};
