@@ -40,7 +40,7 @@ cable_set_build_type(DEFAULT Release CONFIGURATION_TYPES Release RelWithDebInfo)
 
 option(FRKHASHCL "Build with OpenCL mining" ON)
 option(FRKHASHCUDA "Build with CUDA mining" ON)
-option(FRKHASHCPU "Build with CPU mining (only for development)" OFF)
+option(FRKHASHCPU "Build with CPU mining (only for development)" ON)
 option(APICORE "Build with API Server support" ON)
 option(DEVBUILD "Log developer metrics" OFF)
 

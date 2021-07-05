@@ -149,7 +149,7 @@ void CPUMiner::kick_miner() {
 void CPUMiner::search(const dev::exp::WorkPackage& w) {
     constexpr size_t blocksize = 30;
 
-    const auto& context = frkhash::get_global_epoch_context_full(w.epoch);
+    //const auto& context = frkhash::get_global_epoch_context_full(w.epoch);
     const auto header = frkhash::hash256_from_bytes(w.header.data());
     const auto boundary = frkhash::hash256_from_bytes(w.boundary.data());
     auto nonce = w.startNonce;
@@ -164,7 +164,7 @@ void CPUMiner::search(const dev::exp::WorkPackage& w) {
         if (shouldStop())
             break;
 
-        auto r = frkhash::search(context, header, boundary, nonce, blocksize);
+        auto r = frkhash::search(header, boundary, nonce, blocksize);
         if (r.solution_found) {
             h256 mix{reinterpret_cast<byte*>(r.mix_hash.bytes), h256::ConstructFromPointer};
             auto sol = Solution{r.nonce, mix, w, chrono::steady_clock::now(), m_index};
