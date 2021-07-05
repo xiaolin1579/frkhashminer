@@ -312,7 +312,7 @@ void EthGetworkClient::handle_resolve(const boost::system::error_code& ec, tcp::
 }
 
 void EthGetworkClient::processResponse(Json::Value& JRes) {
-    cnote << "Processing Response..."
+    cnote << "Processing Response...";
 
     unsigned _id = 0;        // This SHOULD be the same id as the request it is responding to
     bool _isSuccess = false; // Whether or not this is a succesful or failed response
