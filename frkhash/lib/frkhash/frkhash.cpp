@@ -32,7 +32,7 @@ inline hash512 hash_seed(const hash256& header_hash, uint64_t nonce) noexcept{
 
 inline hash256 hash_final(const hash512& seed){
     uint8_t final_data[sizeof(seed)];
-    std::memcpy(&final_data[0], seed.bytes, sizeof(seed));
+    std::memcpy(&final_data[0], &seed, sizeof(seed));
     return keccak256(final_data, sizeof(final_data));
 }
 }  // namespace
