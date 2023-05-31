@@ -59,12 +59,12 @@ struct search_result
     {}
 };
 
-inline result hash(const hash256& header_hash, uint64_t nonce) noexcept
-{
-    return frkhash_hash(&header_hash, nonce);
-}
+// inline result hash(const hash256& header_hash, uint64_t nonce) noexcept
+// {
+//     return frkhash_hash(&header_hash, nonce);
+// }
 
-//result hash(const hash256& header_hash, uint64_t nonce) noexcept;
+result hash(const hash256& header_hash, uint64_t nonce) noexcept;
 
 inline bool verify_final_hash(const hash256& header_hash, uint64_t nonce, const hash256& boundary) noexcept
 {

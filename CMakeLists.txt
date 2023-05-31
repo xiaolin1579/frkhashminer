@@ -38,11 +38,11 @@ set(PROJECT_VERSION 1.3.14) # Update version
 
 cable_set_build_type(DEFAULT Release CONFIGURATION_TYPES Release RelWithDebInfo)
 
-option(FRKHASHCL "Build with OpenCL mining" ON)
+option(FRKHASHCL "Build with OpenCL mining" OFF)
 option(FRKHASHCUDA "Build with CUDA mining" ON)
-option(FRKHASHCPU "Build with CPU mining (only for development)" OFF)
+option(FRKHASHCPU "Build with CPU mining (only for development)" ON)
 option(APICORE "Build with API Server support" ON)
-option(DEVBUILD "Log developer metrics" OFF)
+option(DEVBUILD "Log developer metrics" ON)
 
 # propagates CMake configuration options to the compiler
 function(configureProject)

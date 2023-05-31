@@ -398,7 +398,7 @@ class MinerCLI {
                 "Mine/Benchmark using CUDA only")
 #endif
 #if EXP_FRKHASHCPU
-            ("cpu",
+            ("cpu,C",
 
                 "Development ONLY ! (NO MINING)")
 #endif
@@ -481,7 +481,7 @@ class MinerCLI {
                 "Use syslog appropriate output (drop timestamp "
                 "and channel prefix)")
 
-#if EXP_FRKHASHCL || EXP_FRKHASHCUDA || EXP_FRKHASH_CPU
+#if EXP_FRKHASHCL || EXP_FRKHASHCUDA || EXP_FRKHASHCPU
 
             ("list-devices,L",
 

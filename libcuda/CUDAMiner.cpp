@@ -127,6 +127,15 @@ void CUDAMiner::workLoop() {
                                             (m_deviceDescriptor.cuStreamSize * m_deviceDescriptor.cuBlockSize));
 
             // Eventually start searching
+
+              cnote << "\n";
+                cnote << "Debug Info";
+                cnote << "Sha3_512: " << _s.work.header << toHex(_s.nonce);
+                cnote << "Header: " << _s.work.header;
+                cnote << "Nonce: " << toHex(_s.nonce);
+                cnote << "MixHash: " << r.mixHash;
+                cnote << "Result: " << r.value;
+
             search(current.header.data(), upper64OfBoundary, current.startNonce, current);
         }
 
@@ -229,8 +238,7 @@ void CUDAMiner::search(uint8_t const* header, uint64_t target, uint64_t start_no
          streamIdx++, start_nonce += batch_blocks) {
         HostToDevice(m_search_buf[streamIdx], zero3, sizeof(zero3));
         m_hung_miner.store(false);
-        run_frkhash_search(m_block_multiple, m_deviceDescriptor.cuBlockSize, m_streams[streamIdx],
-                          m_search_buf[streamIdx], start_nonce);
+        run_frkhash_search(m_block_multiple, m_deviceDescriptor.cuBlockSize, m_streams[streamIdx], m_search_buf[streamIdx], start_nonce);
     }
     m_done = false;
     m_doneMutex.unlock();
@@ -271,8 +279,7 @@ void CUDAMiner::search(uint8_t const* header, uint64_t target, uint64_t start_no
                 streams_bsy &= ~stream_mask;
             else {
                 m_hung_miner.store(false);
-                run_frkhash_search(m_block_multiple, m_deviceDescriptor.cuBlockSize, stream, (Search_results*)buffer,
-                                  start_nonce);
+                run_frkhash_search(m_block_multiple, m_deviceDescriptor.cuBlockSize, stream, (Search_results*)buffer, start_nonce);
             }
 
             if (r.solCount > MAX_SEARCH_RESULTS)
