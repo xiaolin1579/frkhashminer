@@ -129,12 +129,8 @@ void CUDAMiner::workLoop() {
             // Eventually start searching
 
               cnote << "\n";
-                cnote << "Debug Info";
-                cnote << "Sha3_512: " << _s.work.header << toHex(_s.nonce);
-                cnote << "Header: " << _s.work.header;
-                cnote << "Nonce: " << toHex(_s.nonce);
-                cnote << "MixHash: " << r.mixHash;
-                cnote << "Result: " << r.value;
+                cnote << "Debug Info From Cudaminer";
+                cnote << "Header: " << current.header;
 
             search(current.header.data(), upper64OfBoundary, current.startNonce, current);
         }
