@@ -6,3 +6,4 @@ CMakeFiles/
 _3rdParty/
 libcuda-test/
 out/
+.vscode/

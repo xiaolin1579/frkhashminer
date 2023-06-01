@@ -400,14 +400,13 @@ DEV_INLINE uint64_t keccak_f1600_final(uint2* state)
     for (int i = 0; i < 8; ++i)
         s[i] = state[i];
 
-    s[8] = make_uint2(1, 0);
-    s[9] = u2zero;
-    s[10] = u2zero;
-    s[11] = u2zero;
-    s[12] = make_uint2(0, 0x80000000);
-    for (uint32_t i = 13; i < 25; i++)
+    
+    for (uint32_t i = 9; i < 25; i++)
         s[i] = u2zero;
 
+
+    s[8] = make_uint2(1, 0);
+    s[16] = make_uint2(0, 0x80000000);
     /* theta: c = a[0,i] ^ a[1,i] ^ .. a[4,i] */
     t[0] = xor3(s[0], s[5], s[10]);
     t[1] = xor3(s[1], s[6], s[11]) ^ s[16];

@@ -353,7 +353,8 @@ void Farm::submitProof(Solution const& _s) {
 void Farm::submitProofAsync(Solution const& _s) {
 
   Result r = FrkhashAux::eval(_s.work.header, _s.nonce);
-//#ifdef DEV_BUILD
+  
+#ifdef DEV_BUILD
   cnote << "\n";
   cnote << "Debug Info";
   cnote << "Sha3_512: " << _s.work.header << toHex(_s.nonce);
@@ -361,7 +362,7 @@ void Farm::submitProofAsync(Solution const& _s) {
   cnote << "Nonce: " << toHex(_s.nonce);
   cnote << "MixHash: " << r.mixHash;
   cnote << "Result: " << r.value;
-//#endif
+#endif
 
     if (r.value > _s.work.boundary) {
         accountSolution(_s.midx, SolutionAccountingEnum::Failed);
