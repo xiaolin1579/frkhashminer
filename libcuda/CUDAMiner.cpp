@@ -54,9 +54,14 @@ bool CUDAMiner::initDevice() {
 
 bool CUDAMiner::initEpoch() {
     m_initialized = false;
+    // If we get here it means epoch has changed so it's not necessary
+    // to check again dag sizes. They're changed for sure
+    m_current_target = 0;
 
+    size_t RequiredTotalMemory(m_deviceDescriptor.cuStreamSize * sizeof(Search_results));
+    // //ReportGPUMemoryRequired(m_epochContext.lightSize, m_epochContext.dagSize,
+    //                         m_deviceDescriptor.cuStreamSize * sizeof(Search_results));
     try {
-
         // Allocate GPU buffers
         // We need to reset the device and (re)create the dag
         // cudaDeviceReset() frees all previous allocated memory
@@ -64,13 +69,19 @@ bool CUDAMiner::initEpoch() {
         CUDA_CALL(cudaSetDeviceFlags(cudaDeviceScheduleBlockingSync));
         CUDA_CALL(cudaDeviceSetCacheConfig(cudaFuncCachePreferL1));
 
+        // Check whether the current device has sufficient memory every time we recreate the dag
+        if (m_deviceDescriptor.totalMemory < RequiredTotalMemory) {
+            ReportGPUNoMemoryAndPause("required", RequiredTotalMemory, m_deviceDescriptor.totalMemory);
+            return false; // This will prevent to exit the thread and
+                          // Eventually resume mining when changing coin or epoch (NiceHash)
+        }
 
         // create mining buffers
         for (unsigned i = 0; i < m_deviceDescriptor.cuStreamSize; ++i) {
             try {
                 CUDA_CALL(cudaMalloc(&m_search_buf[i], sizeof(Search_results)));
             } catch (...) {
-                //ReportGPUNoMemoryAndPause("mining buffer", sizeof(Search_results), m_deviceDescriptor.totalMemory);
+                ReportGPUNoMemoryAndPause("mining buffer", sizeof(Search_results), m_deviceDescriptor.totalMemory);
                 return false; // This will prevent to exit the thread and
             }
             CUDA_CALL(cudaStreamCreateWithFlags(&m_streams[i], cudaStreamNonBlocking));
@@ -109,10 +120,19 @@ void CUDAMiner::workLoop() {
             }
 
             // Epoch change ?
-
+            if (current.header != last.header) {
+  
                 bool b = initEpoch();
+
                 if (!b)
                     break;
+
+                // As DAG generation takes a while we need to
+                // ensure we're on latest job, not on the one
+                // which triggered the epoch change
+                last = current;
+                continue;
+            }
 
             // Persist most recent job.
             // Job's differences should be handled at higher level
@@ -125,7 +145,8 @@ void CUDAMiner::workLoop() {
             if (hr >= 1e7)
                 m_block_multiple = uint32_t((hr * CU_TARGET_BATCH_TIME) /
                                             (m_deviceDescriptor.cuStreamSize * m_deviceDescriptor.cuBlockSize));
-                                            
+
+            // Eventually start searching
             search(current.header.data(), upper64OfBoundary, current.startNonce, current);
         }
 
@@ -228,7 +249,8 @@ void CUDAMiner::search(uint8_t const* header, uint64_t target, uint64_t start_no
          streamIdx++, start_nonce += batch_blocks) {
         HostToDevice(m_search_buf[streamIdx], zero3, sizeof(zero3));
         m_hung_miner.store(false);
-        run_frkhash_search(m_block_multiple, m_deviceDescriptor.cuBlockSize, m_streams[streamIdx], m_search_buf[streamIdx], start_nonce);
+        run_frkhash_search(m_block_multiple, m_deviceDescriptor.cuBlockSize, m_streams[streamIdx],
+                          m_search_buf[streamIdx], start_nonce);
     }
     m_done = false;
     m_doneMutex.unlock();
@@ -269,7 +291,8 @@ void CUDAMiner::search(uint8_t const* header, uint64_t target, uint64_t start_no
                 streams_bsy &= ~stream_mask;
             else {
                 m_hung_miner.store(false);
-                run_frkhash_search(m_block_multiple, m_deviceDescriptor.cuBlockSize, stream, (Search_results*)buffer, start_nonce);
+                run_frkhash_search(m_block_multiple, m_deviceDescriptor.cuBlockSize, stream, (Search_results*)buffer,
+                                  start_nonce);
             }
 
             if (r.solCount > MAX_SEARCH_RESULTS)

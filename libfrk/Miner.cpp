@@ -37,6 +37,13 @@ void Miner::ReportSolution(const h256& header, uint64_t nonce) {
     cnote << EthWhite << "Job: " << header.abridged() << " Solution: " << toHex(nonce, HexPrefix::Add);
 }
 
+void Miner::ReportGPUNoMemoryAndPause(string mem, uint64_t requiredMemory, uint64_t totalMemory) {
+    cwarn << " requires " << dev::getFormattedMemory((double)requiredMemory)
+          << " of " << mem << " memory from total of " << dev::getFormattedMemory((double)totalMemory)
+          << " available on device.";
+    pause(MinerPauseEnum::PauseDueToInsufficientMemory);
+}
+
 void Miner::pause(MinerPauseEnum what) {
     lock_guard<mutex> l(x_pause);
     m_pauseFlags.set(what);

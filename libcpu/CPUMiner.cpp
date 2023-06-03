@@ -134,6 +134,11 @@ bool CPUMiner::initDevice() {
 }
 
 
+bool CPUMiner::initEpoch() {
+    m_initialized = true;
+    return true;
+}
+
 /*
    Miner should stop working on the current block
    This happens if a

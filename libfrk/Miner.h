@@ -264,9 +264,11 @@ class Miner : public Worker {
 
   protected:
     virtual bool initDevice() = 0;
+    virtual bool initEpoch() = 0;
 
     WorkPackage work() const;
     void ReportSolution(const h256& header, uint64_t nonce);
+        void ReportGPUNoMemoryAndPause(std::string mem, uint64_t requiredTotalMemory, uint64_t totalMemory);
     void updateHashRate(uint32_t _groupSize, uint32_t _increment) noexcept;
 
     const unsigned m_index = 0;          // Ordinal index of the Instance (not the device)
