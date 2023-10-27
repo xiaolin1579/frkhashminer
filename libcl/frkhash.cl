@@ -297,9 +297,9 @@ __attribute__((reqd_work_group_size(WORKSIZE, 1, 1))) __kernel void search(
 
     for (int pass = 0; pass < 2; ++pass)
     {
-      // This is a very clever yet unintuitive solution
-      // Classic case of Just because you can, doesn't mean you should
-        KECCAK_PROCESS(state, select(5, 12, pass != 0), select(8, 1, pass != 0));
+        // Process Keccak-512 first
+        KECCAK_PROCESS(state, 5, 12);
+
         if (pass > 0)
             break;
 
@@ -317,6 +317,22 @@ __attribute__((reqd_work_group_size(WORKSIZE, 1, 1))) __kernel void search(
         state[23] = (uint2)(0);
         state[24] = (uint2)(0);
     }
+
+    // Extract the Keccak-512 result into 'keccak512_result'
+    uint2 keccak512_result[25];
+    for (int i = 0; i < 25; ++i)
+    {
+        keccak512_result[i] = state[i];
+    }
+
+    // Set up 'state' array with Keccak-512 result and process it with Keccak-256.
+    for (int i = 0; i < 25; ++i)
+    {
+        state[i] = keccak512_result[i];
+    }
+
+    // Process Keccak-256 with 5 rounds and an output size of 8.
+    KECCAK_PROCESS(state, 5, 8);
 
     if (get_local_id(0) == 0)
         atomic_inc(&g_output->hashCount);
