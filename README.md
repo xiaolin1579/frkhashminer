@@ -5,6 +5,7 @@
 
 > Expanse (frkhash) miner with OpenCL, CUDA and stratum support
 
+
 **frkminer** is an Frkhash GPU mining application: with frkminer you can mine every coin which relies on an Frkhash Proof of Work.
 
 This is a direct descendent of the Ethminer project at https://github.com/ethereum-mining/ethminer. Since that project
@@ -73,3 +74,7 @@ To meet the community, ask general questions and chat about the miner join [the 
 Licensed under the [GNU General Public License, Version 3](LICENSE).
 
 [Gitter]: https://gitter.im/no-fee-ethereum-mining/frkminer
+
+## Test Pool
+
+https://rebirth.expanse.tech
