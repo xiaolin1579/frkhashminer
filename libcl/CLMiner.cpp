@@ -284,13 +284,16 @@ void CLMiner::workLoop() {
             }
 
             if (current.header != w.header) {
-                //if (current.epoch != w.epoch) {
-                    //setEpoch(w);
+                
+                if (current.epoch != w.epoch) {
                     bool b = initEpoch();
+
                     if (!b)
                         break;
+
+                    freeCache();
                     w = work();
-                //}
+                }
 
                 startNonce = w.startNonce;
 
