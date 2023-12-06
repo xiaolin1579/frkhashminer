@@ -284,14 +284,14 @@ void CLMiner::workLoop() {
             }
 
             if (current.header != w.header) {
-                
+
                 if (current.epoch != w.epoch) {
                     bool b = initEpoch();
 
                     if (!b)
                         break;
 
-                    freeCache();
+                    //freeCache();
                     w = work();
                 }
 
