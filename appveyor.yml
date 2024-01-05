@@ -70,7 +70,7 @@ install:
 
 build_script:
   - call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsMSBuildCmd.bat"
-  - set CMAKE_ARGS=-G "Visual Studio 15 2017 Win64" -H. -Bbuild -DFRKHASHCL=ON -DFRKHASHCUDA=ON -DAPICORE=ON -DHUNTER_JOBS_NUMBER=%NUMBER_OF_PROCESSORS%
+  - set CMAKE_ARGS=-G "Visual Studio 15 2017 Win64" -H. -Bbuild -DETHASHCUDA=ON -DAPICORE=ON -DHUNTER_JOBS_NUMBER=%NUMBER_OF_PROCESSORS%
   - if "%CUDA_VER%" == "8.0" set CMAKE_ARGS=%CMAKE_ARGS% -T v140
   - if "%CUDA_VER%" == "9.1" set CMAKE_ARGS=%CMAKE_ARGS% -T v140
   - cmake %CMAKE_ARGS%
@@ -94,6 +94,6 @@ deploy:
   draft: false
   artifact: frkminer
   auth_token:
-    secure: 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
+    secure: uDRcvbW+9GIyKlZ9guJfWOQ6jg0An6eULg6mEkYgdKn/GVNpYSKvO5oHxP0U8a+e
   on:
     appveyor_repo_tag: true
