@@ -2,37 +2,68 @@ version: 1.3.{build}
 image: Visual Studio 2017
 clone_depth: 100
 environment:
-  CUDA_VER: 11.2.0
-  CUVER: 11
-  CUDA_ARCHIVE: cuda_11.2.0_460.89_win10
+  matrix:
+    - CUDA_VER: "10.0"
+      CUVER: 10
+    - CUDA_VER: "11.1.0"
+      CUVER: 11
+    - CUDA_VER: "12.0.0"
+      CUVER: 12
+    - CUDA_VER: "12.2.1"
+      CUVER: 12.2
+
 install:
-- cmd: >-
-    git submodule update --init --recursive
+  - git submodule update --init --recursive
+  - if "%CUDA_VER%" == "10.0" set CUDA_ARCHIVE=cuda_10.0.130_411.31_windows
+  - if "%CUDA_VER%" == "11.0.3" set CUDA_ARCHIVE=cuda_11.0.3_451.82_win10
+  - if "%CUDA_VER%" == "11.1.0" set CUDA_ARCHIVE=cuda_11.1.0_456.43_win10
+  - if "%CUDA_VER%" == "11.2.0" set CUDA_ARCHIVE=cuda_11.2.0_460.89_win10
+  - if "%CUDA_VER%" == "12.0.0" set CUDA_ARCHIVE=cuda_12.0.0_527.41_windows
+  - if "%CUDA_VER%" == "12.2.1" set CUDA_ARCHIVE=cuda_12.2.1_536.67_windows
+  - if NOT EXIST C:\CUDA\v%CUDA_VER% (
+      if %CUVER% GEQ 11 (
+        curl -L https://developer.download.nvidia.com/compute/cuda/%CUDA_VER%/local_installers/%CUDA_ARCHIVE%.exe -o %CUDA_ARCHIVE%.exe
+      ) else (
+        curl -L https://developer.nvidia.com/compute/cuda/%CUDA_VER%/Prod/local_installers/%CUDA_ARCHIVE% -o %CUDA_ARCHIVE%.exe
+      )
+    )
 
-    IF NOT EXIST C:\CUDA\v%CUDA_VER% curl -L https://developer.download.nvidia.com/compute/cuda/%CUDA_VER%/local_installers/%CUDA_ARCHIVE%.exe -o %CUDA_ARCHIVE%.exe
+  - if NOT EXIST C:\CUDA mkdir C:\CUDA
+  - if NOT EXIST C:\CUDA\v%CUDA_VER% (
+      if %CUVER% GEQ 11 (7z x %CUDA_ARCHIVE%.exe -oC:\CUDA cuda_nvcc/nvcc/* cuda_cudart/* cuda_nvrtc/nvrtc*/*)
+      else (7z x %CUDA_ARCHIVE%.exe -oC:\CUDA nvcc/* nvrtc*/*)
+    )
+  - if NOT EXIST C:\CUDA\v%CUDA_VER% (
+      if %CUVER% GEQ 11 (move C:\CUDA\cuda_nvcc\nvcc C:\CUDA\v%CUDA_VER% && move C:\CUDA\cuda_cudart\cudart C:\CUDA\v%CUDA_VER%\ )
+      else (rename C:\CUDA\nvcc v%CUDA_VER%)
+    )
+  - if EXIST C:\CUDA\v%CUDA_VER%\cudart (
+      xcopy C:\CUDA\v%CUDA_VER%\cudart\* C:\CUDA\v%CUDA_VER%\ /S /Y
+    )
 
-    IF NOT EXIST C:\CUDA mkdir C:\CUDA
+  - set PATH=%PATH%;C:\CUDA\v%CUDA_VER%\bin
 
-    IF NOT EXIST C:\CUDA\v%CUDA_VER% 7z x %CUDA_ARCHIVE%.exe -oC:\CUDA cuda_nvcc/nvcc/* cuda_cudart/* cuda_nvrtc/nvrtc*/*
+cache:
+  - C:\CUDA\v10.0 -> appveyor.yml
+  - C:\CUDA\v11.0.3 -> appveyor.yml
+  - C:\CUDA\v11.1.0 -> appveyor.yml
+  - C:\CUDA\v11.2.0 -> appveyor.yml
+  - C:\CUDA\12.0.0 -> appveyor.yml
+  - C:\CUDA\12.2.1 -> appveyor.yml
 
-    IF NOT EXIST C:\CUDA\v%CUDA_VER% move C:\CUDA\cuda_nvcc\nvcc C:\CUDA\v%CUDA_VER% && move C:\CUDA\cuda_cudart\cudart C:\CUDA\v%CUDA_VER%\
-
-    IF EXIST C:\CUDA\v%CUDA_VER%\cudart xcopy C:\CUDA\v%CUDA_VER%\cudart\* C:\CUDA\v%CUDA_VER%\ /S /Y
-
-    set PATH=%PATH%;C:\CUDA\v%CUDA_VER%\bin
-cache: C:\CUDA\v11.2.0
 build_script:
-- cmd: >-
-    call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsMSBuildCmd.bat"
+ - call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsMSBuildCmd.bat"
 
-    set CMAKE_ARGS=-G "Visual Studio 15 2017 Win64" -H. -Bbuild -DFRKHASHCL=ON -DFRKHASHCUDA=ON -DAPICORE=ON -DHUNTER_JOBS_NUMBER=%NUMBER_OF_PROCESSORS%
+ - set CMAKE_ARGS=-G "Visual Studio 15 2017 Win64" -H. -Bbuild -DFRKHASHCL=ON -DFRKHASHCUDA=ON -DAPICORE=ON -DHUNTER_JOBS_NUMBER=%NUMBER_OF_PROCESSORS%
 
-    cmake %CMAKE_ARGS%
+ - cmake %CMAKE_ARGS%
 
-    cmake --build build --config Release --target package
+ - cmake --build build --config Release --target package
+
+ - ps: |
+      . build/frkminer/buildinfo.ps1
+      mv build/frkminer.zip build/$env:project_name-$env:project_version-cuda$env:CUDA_VER-$env:system_name-$env:system_processor.zip
 artifacts:
-- path: build\frkminer.zip
+- path: build\frkminer-*.zip
   name: frkminer
-- path: build\frkminer.zip.sha256
-  name: sha256
 deploy: off
