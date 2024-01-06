@@ -42,7 +42,8 @@ install:
     )
 
   - set PATH=C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%;C:\CUDA\v%CUDA_VER%\bin
-
+  - pip install requests gitpython
+  - nvcc -V
 cache:
   - C:\CUDA\v10.0 -> appveyor.yml
   - C:\CUDA\v11.0.3 -> appveyor.yml
