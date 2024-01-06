@@ -23,13 +23,13 @@ include(HunterGate)
 
 include(defaults/HunterCacheServers)
 
-cable_configure_toolchain(DEFAULT cxx17)
+cable_configure_toolchain(DEFAULT cxx11)
 
 set(HUNTER_CONFIGURATION_TYPES Release CACHE STRING "Build type of Hunter packages")
 set(HUNTER_JOBS_NUMBER 6 CACHE STRING "Number of parallel builds used by Hunter")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.304.tar.gz"
-    SHA1 "cae9026e69d7d8333897663688a11f4232fb8826"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.320.tar.gz"
+    SHA1 "9b4e732afd22f40482c11ad6342f7d336634226f"
     LOCAL
 )
 
