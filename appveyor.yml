@@ -1,4 +1,4 @@
-version: 1.3.{build}
+version: 1.3.14
 image: Visual Studio 2017
 clone_depth: 100
 environment:
@@ -67,4 +67,18 @@ build_script:
 artifacts:
 - path: build\frkminer-*.zip
   name: frkminer
-deploy: off
+
+deploy:
+  # Create GitHub release, also set the release name and description.
+  provider: GitHub
+  tag: $(appveyor_repo_tag_name)
+  release: "$(project_name) $(project_version)"
+  description: ""
+  force_update: true  # Force update in case Travis CI created the release before.
+  prerelease: $(project_version_is_prerelease)
+  draft: false
+  artifact: frkminer
+  auth_token:
+    secure: uDRcvbW+9GIyKlZ9guJfWOQ6jg0An6eULg6mEkYgdKn/GVNpYSKvO5oHxP0U8a+e
+  on:
+    appveyor_repo_tag: true
