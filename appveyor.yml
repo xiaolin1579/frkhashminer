@@ -11,6 +11,7 @@ environment:
       CUVER: 12
     - CUDA_VER: "12.2.1"
       CUVER: 12.2
+
 install:
   - git submodule update --init --recursive
   - if "%CUDA_VER%" == "10.0" set CUDA_ARCHIVE=cuda_10.0.130_411.31_windows
@@ -40,7 +41,7 @@ install:
       xcopy C:\CUDA\v%CUDA_VER%\cudart\* C:\CUDA\v%CUDA_VER%\ /S /Y
     )
 
-  - set PATH=%PATH%;C:\CUDA\v%CUDA_VER%\bin
+  - set PATH=C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%;C:\CUDA\v%CUDA_VER%\bin
 
 cache:
   - C:\CUDA\v10.0 -> appveyor.yml
