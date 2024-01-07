@@ -78,7 +78,6 @@ deploy:
   prerelease: $(project_version_is_prerelease)
   draft: false
   artifact: frkminer
+  appveyor_repo_tag: true
   auth_token:
-    secure: uDRcvbW+9GIyKlZ9guJfWOQ6jg0An6eULg6mEkYgdKn/GVNpYSKvO5oHxP0U8a+e
-  on:
-    appveyor_repo_tag: true
+    secure: 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
